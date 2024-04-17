@@ -9,9 +9,60 @@ const firebaseConfig = {
   measurementId: "G-MZC38NN5BZ"
 };
 
+$(document).ready(function(){
 
-firebase.initializeApp(firebaseConfig);
-var database = firebase.database();
+  
+  firebase.initializeApp(firebaseConfig);
+  var database = firebase.database();
+
+  let lockref = firebase.database().ref('shopless/admin/');
+
+// Read the data once
+lockref.once('value', function(snapshot) {
+  // Iterate over each child
+  snapshot.forEach(function(childSnapshot) {
+    var key = childSnapshot.key; // The key for the child data
+    var value = childSnapshot.val(); // The value/data for the child
+
+    // Do something with the key and value
+    console.log('Key:', key, 'Value:', value);
+
+    if (key=="lock") {
+      if (value=="") {
+        
+        $(".lock-card").slideUp(300);
+        $(".form").slideDown(300);
+      } 
+    }
+    if (key =="password") {
+      var dbPWD = value
+    }
+    if (key =="username") {
+      var dbUname = value
+      //alert(dbUname)
+    }
+  });
+});
+let Uname = document.querySelector("#Uname")
+let Pwd = document.querySelector("#Pwd")
+$("#loginBTN").click(function(dbPWD, dbUname){
+  if (Uname.value!="") {
+    if (Pwd.value !="") {
+      alert("emtok")
+      if (Uname.value== dbUname) {
+        alert("uname done")
+        if (Pwd.value==dbPWD) {
+          $(".form").slideUp(300);
+        $(".lock-card").slideDown(300);
+        alert("done")
+        }
+      } else{
+        alert(dbUname)
+      }
+    }
+  }
+})
+
 
 // HTML input element
 
@@ -381,3 +432,7 @@ function success() {
 
 
 
+
+
+
+})

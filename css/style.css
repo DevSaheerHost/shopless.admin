@@ -18,7 +18,7 @@ main{
     overflow: scroll;
     height: 100%;
 }
-h1{
+h1, h3{
     font-family: "Orbitron", sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;
@@ -60,6 +60,8 @@ main, .container, .lock{
     align-items: center;
     justify-content: center;
     flex-flow: column;
+
+    position: relative;
 }
 
 input, button{
@@ -113,6 +115,9 @@ button{
     overflow: scroll;
     display: block;
 }
+.form{
+    display: none;
+}
 
 button img{
     max-width: 30px;
@@ -125,3 +130,21 @@ button .doneGif{
 button svg{
     color: red;
 }
+
+
+
+/* lock sec */
+
+.lock-card{
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    bottom: 50%;
+    transform: translateX(50%);
+    RIGHT: 50%;
+    
+
+}
+
+
+
