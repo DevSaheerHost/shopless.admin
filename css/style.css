@@ -73,6 +73,7 @@ input, button{
 }
 input{
     background-color: #31363F;
+    color: #76ABAE;
 }
 input:focus{
     background-color: #76ABAE;
