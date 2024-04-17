@@ -218,36 +218,3 @@ function success(){
 
 
 
-
-
-// JavaScript to handle the file upload and get the download URL
-document.getElementById('fileInput').addEventListener('change', function(event) {
-  // Get the file
-  var file = event.target.files[0];
-
-  // Create a storage reference
-  var storageRef = firebase.storage().ref('shopless/ads/images/' + file.name);
-
-  // Upload the file
-  var uploadTask = storageRef.put(file);
-
-  // Listen for state changes, errors, and completion of the upload.
-  uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-    function(snapshot) {
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log('Upload is ' + progress + '% done');
-    }, function(error) {
-      // Handle unsuccessful uploads
-      console.error(error);
-      alert("error: ", error)
-    }, function() {
-      // Handle successful uploads on complete
-      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        console.log('File available at', downloadURL);
-        alert("url is: ", downloadURL);
-      });
-    }
-  );
-});
-
