@@ -37,6 +37,8 @@ loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
           loginBtn.style.border = "solid 1px #41B06E"
           loginBtn.style.background = "#222831"
 
+          setTimeout(loginBTNnormal,3000)
+
           $(".lock-card").slideUp(300);
           $(".form").slideDown(300);
         }
@@ -337,6 +339,13 @@ loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
 
   //-------
 
+  function loginBTNnormal() {
+    loginBtn.innerHTML = `Upload`
+    loginBtn.style.background = btn_normal_bg
+    loginBtn.style.color = "#EEEEEE"
+    loginBtn.style.border = "none"
+
+  }
   function BTNnormal() {
     uploadBtn.innerHTML = `Upload`
     uploadBtn.style.background = btn_normal_bg
