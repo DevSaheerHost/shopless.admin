@@ -10,7 +10,10 @@ const firebaseConfig = {
 };
 
 $(document).ready(function () {
+var loginBtn=document.querySelector("#loginBTN")
 
+loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
+    loginBtn.classList.add("btn_loading")
 
   firebase.initializeApp(firebaseConfig);
   var database = firebase.database();
@@ -29,6 +32,10 @@ $(document).ready(function () {
 
       if (key == "lock") {
         if (value == "") {
+          loginBtn.classList.remove("btn_loading")
+          loginBtn.innerHTML = `<img class="doneGif" src="./done.gif" alt="">`
+          loginBtn.style.border = "solid 1px #41B06E"
+          loginBtn.style.background = "#222831"
 
           $(".lock-card").slideUp(300);
           $(".form").slideDown(300);
