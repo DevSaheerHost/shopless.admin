@@ -4,18 +4,45 @@
     transition: all .2s;
     scrollbar-width: none;
 }
-
+:root{
+    --primary: #526988;
+    --dark: #222831;
+    --white: #EEEEEE;
+    --body: #31363F;
+    --a: #76ABAE
+}
 body{
     padding: 0;
     margin: 0;
     text-align: center;
-    height: 100vh;
+    height: 100%;
 
-    background-color: #31363F;
-    color: #EEEEEE;
+    background-color: var(--body);
+    color: var(--white);
+}
+.Light{
+    --primary: #9CAFAA;
+    --dark: #D6DAC8;
+    --white: #222831;
+    --body: #9CAFAA;
+    --a: #222831;
+    & input:hover{
+        background-color: #9CAFAA;
+    }
+}
+.Dark{
+    --primary: #526988;
+    --dark: #222831;
+    --white: #EEEEEE;
+    --body: #31363F;
+    --a: #76ABAE
+    & input:hover{
+        background-color: #9CAFAA;
+    }
 }
 .logo{
-    max-width: 200px;
+    max-width: 100px;
+    margin: auto;
 }
 main{
     overflow: scroll;
@@ -28,7 +55,7 @@ h1, h3{
   font-style: normal;
 }
 .card .a{
-    color: #76ABAE;
+    color: var(--a);
     width: 100%;
     text-align: end;
     display: flex;
@@ -36,7 +63,7 @@ h1, h3{
     justify-content: end;
 }
 .card a{
-    color: #76ABAE;
+    color: var(--a);
     padding: 8px;
     display: flex;
     align-items: center;
@@ -48,8 +75,8 @@ h1, h3{
     font-family: "Orbitron", sans-serif;
 }
 .card a:hover{
-    background-color: #76ABAE;
-    color: #222831;
+    background-color: var(--a);
+    color: var(--darck);
 }
 .card a svg{
     width: 20px;
@@ -57,7 +84,7 @@ h1, h3{
     transition: all .1s !important;
 }
 main, .container, .lock{
-    height: 100vh;
+    height: 100%;
     overflow: scroll;
 }
 .lock{
@@ -79,14 +106,14 @@ input, button{
     outline: none;
 }
 input{
-    background-color: #31363F;
-    color: #76ABAE;
+    background-color: var(--body);
+    color: var(--a);
 }
 input:focus{
-    background-color: #76ABAE;
-    color: #EEEEEE;
+    background-color: var(--a);
+    color: var(--white);
     &::placeholder{
-        color: #EEEEEE;
+        color: var(--white);
     }
 }
 .inputError{
@@ -94,8 +121,8 @@ input:focus{
 }
 
 button{
-    background-color: #76ABAE;
-    color: #EEEEEE;
+    background-color: var(--primary);
+    color: var(--white);
     font-weight: bold;
     border: none;
     overflow: hidden;
@@ -104,17 +131,17 @@ button{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #526988;
+    background-color: var(--primary);
     margin-top: 40px;
 }
 
 .btn_loading{
-    background-color: #222831;
-    border: 1px solid  #76ABAE;
+    background-color: var(--dark);
+    border: 1px solid  var(--primary);
 }
 .card{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    background-color: #222831;
+    background-color: var(--dark);
     border-radius: 1rem;
     width:90%;
     margin: auto;
@@ -126,7 +153,7 @@ button{
     display: block;
 }
 .uprateCard{
-    border: 3px solid #526988;
+    border: 3px solid var(--primary);
     position: fixed;
 
     z-index: 1;
@@ -138,7 +165,7 @@ button{
     display: none;
 }
 .uprateCard nav{
-    background-color: #526988;
+    background-color: var(--primary);
     padding: 7px;
 }
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
@@ -188,3 +215,86 @@ button svg{
 
 
 
+
+header{
+    background-color: var(--primary);
+    height: 70px;
+    overflow: hidden;
+}
+header .container{
+    display: flex;
+    align-items: center;
+    padding: 8px;
+}
+span.menu_btn svg{
+    height: 40px;
+    width: 40px;
+}
+
+
+
+
+
+.side_menu{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 70%;
+    background-color: var(--dark);
+    border: 2px solid var(--dark);
+    z-index: 3;
+    /* display: none; */
+}
+
+.close_nav svg{
+    height: 40px;
+    width: 40px;
+}
+
+.side_menu nav{
+    background-color: var(--body);
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 69px;
+}
+nav h3{
+    padding: 0;
+    margin: 0;
+}
+
+
+.nav_card span{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    select{
+        background-color: transparent;
+        color: var(--a);
+        border: 2px solid;
+        padding: 10px;
+        border-radius: .3rem;
+        font-weight: 800;
+
+        
+    }
+    
+}
+
+option{
+    background-color: var(--a);
+    color: var(--dark);
+    border: 1px solid var(--a);
+    padding: 5px;
+    margin: 0;
+    outline: none;
+    font-weight: 700;
+    border-radius: .3rem;
+    overflow: hidden;
+}
+
+.nav_card input{
+    margin: 0;
+}

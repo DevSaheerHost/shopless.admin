@@ -558,6 +558,38 @@ isOnlineForDatabase.on('value', function(snapshot) {
   });
 });
 
+$(".side_menu").slideUp(0)
+
+$(".menu_btn").click(function(){
+  $(".side_menu").slideDown(200)
+})
+$(".close_nav").click(function(){
+  $(".side_menu").slideUp(200)
+})
+
+
+
+
+var themeData = localStorage.getItem("theme")
+if (themeData!=null) {
+  document.querySelector("#theme_selector").value=themeData
+  
+  document.body.classList.add(themeData)
+}
+
+$("#theme_selector").change(function(){
+  if (this.value=="Light") {
+   document.body.classList.add(this.value)
+   document.body.classList.remove("Dark")
+   localStorage.setItem("theme", "Light")
+  } else{
+    if (this.value=="Dark") {
+      document.body.classList.add(this.value)
+      document.body.classList.remove("Light")
+      localStorage.setItem("theme", "Dark")
+     }
+  }
+})
 
 
 
@@ -600,4 +632,8 @@ bl=battery.level * 100
   battery.addEventListener('dischargingtimechange', function() {
     updateBatteryStatus();
   });
+
+
+
+
 });
