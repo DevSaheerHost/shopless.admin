@@ -80,32 +80,57 @@ $(document).ready(function () {
 
 
           }, 2500);
+        } else{
+          loginBtn.classList.remove("btn_loading")
+          //loginBtn.innerHTML = `<img class="doneGif" src="./done.gif" alt="">`
+          //loginBtn.style.border = "solid 1px #41B06E"
+          loginBtn.style.background = "#222831"
+          loginBTNnormal()
+          //setTimeout(loginBTNnormal, 3000)
+          // $("#loginBTN").click(function(){
+          //   if (condition) {
+              
+          //   }
+          // })
         }
       }
+      
       if (key == "password") {
-        var dbPWD = value
+         dbPWD = value
+        //alert(key)
       }
       if (key == "username") {
-        var dbUname = value
-        //alert(dbUname)
+         dbUname = value
+        console.log("uname=========: "+ dbUname)
+        //alert(value)
       }
     });
   });
   let Uname = document.querySelector("#Uname")
   let Pwd = document.querySelector("#Pwd")
-  $("#loginBTN").click(function (dbPWD, dbUname) {
+
+  
+  $("#loginBTN").click(function () {
     if (Uname.value != "") {
       if (Pwd.value != "") {
-        alert("emtok")
+        // alert(dbUname)
         if (Uname.value == dbUname) {
-          alert("uname done")
+          //alert("uname done")
           if (Pwd.value == dbPWD) {
-            $(".form").slideUp(300);
-            $(".lock-card").slideDown(300);
-            alert("done")
+            $(".lock-card").slideUp(300);
+            $(".form").slideDown(300);
+            // alert("all")
+          } else{
+            Pwd.classList.add("inputError")
+            setTimeout(() => {
+              Pwd.classList.remove("inputError")
+            }, 1000);
           }
         } else {
-          alert(dbUname)
+          Uname.classList.add("inputError")
+          setTimeout(() => {
+            Uname.classList.remove("inputError")
+          }, 1000);
         }
       }
     }
