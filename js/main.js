@@ -92,6 +92,57 @@ $(document).ready(function () {
               
           //   }
           // })
+
+
+          // loginBtn.classList.remove("btn_loading")
+          // loginBtn.innerHTML = `<img class="doneGif" src="./done.gif" alt="">`
+          // loginBtn.style.border = "solid 1px #41B06E"
+          // loginBtn.style.background = "#222831"
+
+          // setTimeout(loginBTNnormal, 3000)
+
+          
+
+            let vertionReq = "corrent"
+            let vertion = "old"
+            let vertionRef = firebase.database().ref('shopless/admin/vertion');
+
+
+            // Read the data once
+            vertionRef.once('value', function (snapshot) {
+
+              snapshot.forEach(function (childSnapshot) {
+                var vertionKey = childSnapshot.key;
+                var vertionValue = childSnapshot.val();
+
+                if (vertionKey == "code") {
+                  $("#verText").html("Updated "+ vertionValue)
+                  if (vertionValue != localStorage.getItem("vertion")) {
+                    $(".uprateCard").slideDown(300)
+                    $(".form").slideUp(300);
+                    //localStorage.setItem("vertion", vertionValue)
+                  } else{
+                    $(".lock-card").slideDown(300)
+                    $(".uprateCard").slideUp(300);
+                  }
+                }
+
+                $("#closeDetails").click(function(){
+                  localStorage.setItem("vertion", vertionValue)
+                  $(".lock-card").slideDown(300)
+                    $(".uprateCard").slideUp(300);
+                })
+
+                console.log('Key:', vertionKey, 'Value:', vertionValue);
+
+              });
+            });
+
+
+          
+
+
+          
         }
       }
       
