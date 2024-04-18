@@ -417,4 +417,111 @@ $(document).ready(function () {
 
 
 
+
+
+
+
+
+
+
+  
+
+
+// Get the operating system
+const os = navigator.platform;
+
+// Get the browser's user agent
+const userAgent = navigator.userAgent;
+
+// Get the browser's language
+const language = navigator.language;
+
+// Log the device information
+console.log(`Operating System: ${os}`);
+console.log(`User Agent: ${userAgent}`);
+console.log(`Browser Language: ${language}`);
+
+
+
+
+
+// firebase.initializeApp(firebaseConfig);
+
+
+// Get a reference to the Firebase Realtime Database
+var db = firebase.database();
+
+// Reference to the users' status path in your database
+var usersStatusDatabaseRef = db.ref('/shopless/admin/status');
+
+// Get the current user's ID
+// var userId = firebase.auth().currentUser.uid;
+
+// Reference to the current user's status
+var userStatusDatabaseRef = usersStatusDatabaseRef.child(os);
+
+// Reference to the /.info/connected path in Firebase Realtime Database
+var isOnlineForDatabase = db.ref('.info/connected');
+
+isOnlineForDatabase.on('value', function(snapshot) {
+  // If we're not currently connected, don't do anything
+  if (snapshot.val() == false) {
+    //alert("online")
+    return;
+  };
+
+  // If we are currently connected, then use the 'onDisconnect()' 
+  // method to set the user's status to 'offline' once they disconnect
+  userStatusDatabaseRef.onDisconnect().set('offline').then(function() {
+    // The promise returned from .onDisconnect().set() will
+    // resolve as soon as the server acknowledges the onDisconnect() 
+    // request, NOT once we've actually disconnected:
+    // Set our user's online status to 'online'
+    // alert("ofline?")
+    userStatusDatabaseRef.set('online');
+  });
+});
+
+
+
+
 })
+
+
+
+
+
+navigator.getBattery().then(function(battery) {
+  function updateBatteryStatus() {
+    console.log("Battery charge level: " + (battery.level * 100) + "%");
+    console.log("Battery charging: " + (battery.charging ? "Yes" : "No"));
+    console.log("Battery charging time: " + (battery.chargingTime / 60) + " minutes");
+    console.log("Battery discharging time: " + (battery.dischargingTime / 60) + " minutes");
+bl=battery.level * 100
+    if (bl<20) {
+      alert("Your battery too low: "+ bl+"%")
+    }let bc = battery.charging ? "Yes" : "No"
+    if (bc=="Yes") {
+     if (bl>90) {
+      alert("Battery Aproximatly done: "+bl+"%") 
+     }
+    }
+  }
+
+  // Update the battery status initially
+  updateBatteryStatus();
+
+  // Set up event listeners to update the status whenever it changes
+  battery.addEventListener('chargingchange', function() {
+    updateBatteryStatus();
+  });
+  battery.addEventListener('levelchange', function() {
+    updateBatteryStatus();
+  });
+  battery.addEventListener('chargingtimechange', function() {
+    updateBatteryStatus();
+  });
+  battery.addEventListener('dischargingtimechange', function() {
+    updateBatteryStatus();
+  });
+});

@@ -14,6 +14,9 @@ body{
     background-color: #31363F;
     color: #EEEEEE;
 }
+.logo{
+    max-width: 200px;
+}
 main{
     overflow: scroll;
     height: 100%;
@@ -41,6 +44,8 @@ h1, h3{
     border-radius: 1000px;
     overflow: hidden;
     transition: all .1s !important;
+
+    font-family: "Orbitron", sans-serif;
 }
 .card a:hover{
     background-color: #76ABAE;
@@ -114,7 +119,7 @@ button{
     max-width: 400px;
     max-height: max-content;
     min-height: max-content;
-    overflow: scroll;
+    /* overflow: scroll; */
     display: block;
 }
 .uprateCard{
