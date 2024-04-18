@@ -404,7 +404,7 @@ $(document).ready(function () {
   //-------
 
   function loginBTNnormal() {
-    loginBtn.innerHTML = `Upload`
+    loginBtn.innerHTML = `LOGIN`
     loginBtn.style.background = btn_normal_bg
     loginBtn.style.color = "#EEEEEE"
     loginBtn.style.border = "none"
