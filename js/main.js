@@ -10,10 +10,10 @@ const firebaseConfig = {
 };
 
 $(document).ready(function () {
-var loginBtn=document.querySelector("#loginBTN")
+  var loginBtn = document.querySelector("#loginBTN")
 
-loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
-    loginBtn.classList.add("btn_loading")
+  loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
+  loginBtn.classList.add("btn_loading")
 
   firebase.initializeApp(firebaseConfig);
   var database = firebase.database();
@@ -37,10 +37,49 @@ loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
           loginBtn.style.border = "solid 1px #41B06E"
           loginBtn.style.background = "#222831"
 
-          setTimeout(loginBTNnormal,3000)
+          setTimeout(loginBTNnormal, 3000)
 
-          $(".lock-card").slideUp(300);
-          $(".form").slideDown(300);
+          setTimeout(() => {
+            $(".lock-card").slideUp(300);
+            $(".form").slideDown(300);
+
+            let vertionReq = "corrent"
+            let vertion = "old"
+            let vertionRef = firebase.database().ref('shopless/admin/vertion');
+
+
+            // Read the data once
+            vertionRef.once('value', function (snapshot) {
+
+              snapshot.forEach(function (childSnapshot) {
+                var vertionKey = childSnapshot.key;
+                var vertionValue = childSnapshot.val();
+
+                if (vertionKey == "code") {
+                  $("#verText").html("Updated "+ vertionValue)
+                  if (vertionValue != localStorage.getItem("vertion")) {
+                    $(".uprateCard").slideDown(300)
+                    $(".form").slideUp(300);
+                    //localStorage.setItem("vertion", vertionValue)
+                  } else{
+                    $(".form").slideDown(300)
+                    $(".uprateCard").slideUp(300);
+                  }
+                }
+
+                $("#closeDetails").click(function(){
+                  localStorage.setItem("vertion", vertionValue)
+                  $(".form").slideDown(300)
+                    $(".uprateCard").slideUp(300);
+                })
+
+                console.log('Key:', vertionKey, 'Value:', vertionValue);
+
+              });
+            });
+
+
+          }, 2500);
         }
       }
       if (key == "password") {
@@ -190,14 +229,14 @@ loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
                   console.log('Update successful!');
 
                   BTNsuccess()
-              setTimeout(BTNnormal, 3000)
+                  setTimeout(BTNnormal, 3000)
 
 
                 }).catch((error) => {
                   alert('Update failed: ' + error.message);
 
                   BTNerror()
-              setTimeout(BTNnormal, 3000)
+                  setTimeout(BTNnormal, 3000)
                 });
               } else {
                 if (userInput == 5) {
@@ -212,7 +251,7 @@ loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
                     alert('Update failed: ' + error.message);
 
                     BTNerror()
-              setTimeout(BTNnormal, 3000)
+                    setTimeout(BTNnormal, 3000)
                   });
                 } else {
                   if (userInput == 6) {
@@ -220,14 +259,14 @@ loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
                       console.log('Update successful!');
 
                       BTNsuccess()
-              setTimeout(BTNnormal, 3000)
+                      setTimeout(BTNnormal, 3000)
 
 
                     }).catch((error) => {
                       alert('Update failed: ' + error.message);
 
                       BTNerror()
-              setTimeout(BTNnormal, 3000)
+                      setTimeout(BTNnormal, 3000)
                     });
                   } else {
                     if (userInput == 7) {
@@ -235,14 +274,14 @@ loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
                         console.log('Update successful!');
 
                         BTNsuccess()
-              setTimeout(BTNnormal, 3000)
+                        setTimeout(BTNnormal, 3000)
 
 
                       }).catch((error) => {
                         alert('Update failed: ' + error.message);
 
                         BTNerror()
-              setTimeout(BTNnormal, 3000)
+                        setTimeout(BTNnormal, 3000)
                         setTimeout(BTNnormal, 3000)
                       });
                     } else {
@@ -251,14 +290,14 @@ loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
                           console.log('Update successful!');
 
                           BTNsuccess()
-              setTimeout(BTNnormal, 3000)
+                          setTimeout(BTNnormal, 3000)
 
 
                         }).catch((error) => {
                           alert('Update failed: ' + error.message);
 
                           BTNerror()
-              setTimeout(BTNnormal, 3000)
+                          setTimeout(BTNnormal, 3000)
                         });
                       } else {
                         if (userInput == 9) {
@@ -277,7 +316,7 @@ loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
                           });
                         } else {
                           BTNerror()
-              setTimeout(BTNnormal, 3000)
+                          setTimeout(BTNnormal, 3000)
                         }
                       }
                     }
@@ -319,7 +358,7 @@ loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
 
 
           BTNsuccess()
-              setTimeout(BTNnormal, 3000)
+          setTimeout(BTNnormal, 3000)
 
         })
         .catch(error => console.log(error));

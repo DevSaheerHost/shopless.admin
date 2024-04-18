@@ -116,6 +116,34 @@ button{
     overflow: scroll;
     display: block;
 }
+.uprateCard{
+    position: fixed;
+
+    z-index: 1;
+    top: 50%;
+    bottom: 50%;
+    transform: translateX(50%);
+    RIGHT: 50%;
+    padding: 0;
+    display: none;
+}
+.uprateCard nav{
+    background-color: #526988;
+    padding: 7px;
+}
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
+
+.uprateCard .details{
+    padding: 20px;
+    text-align: left;
+    font-family: "M PLUS 1 Code", monospace;
+    line-height: 30px;
+    letter-spacing: .1px;
+    color: #5f85b6;
+}
+.details button{
+    margin-top: 40px;
+}
 .form{
     display: none;
 }
