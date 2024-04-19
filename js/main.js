@@ -552,7 +552,7 @@ if(localStorage.getItem("admin_name") != null){
 } else {
   // Reference to the current user's status using a placeholder 'os' variable
   // Make sure to define 'os' or replace it with the actual user ID or another identifier
-  var userStatusDatabaseRef = usersStatusDatabaseRef.child('os_placeholder');
+  var userStatusDatabaseRef = usersStatusDatabaseRef.child(os);
 }
 
 // Function to format the timestamp into a human-readable date and time
