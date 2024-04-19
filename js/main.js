@@ -536,8 +536,8 @@ console.log(`Browser Language: ${language}`);
 
 
 
-// firebase.initializeApp(firebaseConfig);
 
+// firebase.initializeApp(firebaseConfig);
 
 // Get a reference to the Firebase Realtime Database
 var db = firebase.database();
@@ -545,40 +545,62 @@ var db = firebase.database();
 // Reference to the users' status path in your database
 var usersStatusDatabaseRef = db.ref('/shopless/admin/status');
 
-// Get the current user's ID
-// var userId = firebase.auth().currentUser.uid;
-
-if(localStorage.getItem("admin_name")!=null){
-  let id = localStorage.getItem("admin_name")
+// Check if admin_name is stored in localStorage and set the userStatusDatabaseRef accordingly
+if(localStorage.getItem("admin_name") != null){
+  let id = localStorage.getItem("admin_name");
   var userStatusDatabaseRef = usersStatusDatabaseRef.child(id);
-} else{
-  // Reference to the current user's status
-  var userStatusDatabaseRef = usersStatusDatabaseRef.child(os);
+} else {
+  // Reference to the current user's status using a placeholder 'os' variable
+  // Make sure to define 'os' or replace it with the actual user ID or another identifier
+  var userStatusDatabaseRef = usersStatusDatabaseRef.child('os_placeholder');
 }
 
-
+// Function to format the timestamp into a human-readable date and time
+function formatTimestamp(timestamp) {
+  var date = new Date(timestamp);
+  var formattedDate = date.toLocaleDateString('en-IN') + ' ' + date.toLocaleTimeString('en-IN');
+  return formattedDate;
+}
 
 // Reference to the /.info/connected path in Firebase Realtime Database
 var isOnlineForDatabase = db.ref('.info/connected');
-
 isOnlineForDatabase.on('value', function(snapshot) {
   // If we're not currently connected, don't do anything
+  $(".status").html("Online|")
   if (snapshot.val() == false) {
-    //alert("online")
     return;
   };
 
-  // If we are currently connected, then use the 'onDisconnect()' 
-  // method to set the user's status to 'offline' once they disconnect
-  userStatusDatabaseRef.onDisconnect().set('offline').then(function() {
-    // The promise returned from .onDisconnect().set() will
-    // resolve as soon as the server acknowledges the onDisconnect() 
-    // request, NOT once we've actually disconnected:
-    // Set our user's online status to 'online'
-    // alert("ofline?")
-    userStatusDatabaseRef.set('online');
+  
+  // If we are currently connected, then use the 'onDisconnect()' method
+  userStatusDatabaseRef.onDisconnect().update({
+    status: 'offline',
+    last_changed: firebase.database.ServerValue.TIMESTAMP
+  }).then(function() {
+    
+    // Get the server timestamp and convert it to a human-readable format
+    db.ref('.info/serverTimeOffset').once('value').then(function(offsetSnapshot) {
+      var serverTime = Date.now() + offsetSnapshot.val();
+      var formattedTime = formatTimestamp(serverTime);
+
+      // Set our user's online status to 'online' with the formatted timestamp
+      userStatusDatabaseRef.update({
+        status: 'online',
+        last_changed: formattedTime
+      });
+    });
   });
 });
+
+// Listen for changes in the user's status and log the status change with the formatted timestamp
+userStatusDatabaseRef.on('value', function(snapshot) {
+  if(snapshot.val() != null){
+    console.log('User status changed to: ' + snapshot.val().status);
+    console.log('Time: ' + snapshot.val().last_changed);
+    
+  }
+});
+
 
 $(".side_menu").slideUp(0)
 
@@ -588,6 +610,32 @@ $(".menu_btn").click(function(){
 $(".close_nav").click(function(){
   $(".side_menu").slideUp(200)
 })
+
+
+
+// Function to call when connected to the internet
+function onInternetConnected() {
+  console.log("Internet connection is now available.");
+  // Perform actions when internet is connected
+}
+
+// Function to call when disconnected from the internet
+function onInternetDisconnected() {
+  $(".status").html("Offline")
+  // Perform actions when internet is disconnected
+}
+
+// Add event listeners for the online and offline events
+window.addEventListener('online', onInternetConnected);
+window.addEventListener('offline', onInternetDisconnected);
+
+// Initial check for internet connection
+if(navigator.onLine) {
+  onInternetConnected();
+} else {
+  onInternetDisconnected();
+}
+
 
 
 
