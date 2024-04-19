@@ -160,6 +160,11 @@ $(document).ready(function () {
   let Uname = document.querySelector("#Uname")
   let Pwd = document.querySelector("#Pwd")
 
+  let adminName= localStorage.getItem("admin_name")
+
+  if (adminName!=null) {
+    $("#adminName").hide(100)
+  }
   
   $("#loginBTN").click(function () {
     if (Uname.value != "") {
@@ -168,8 +173,17 @@ $(document).ready(function () {
         if (Uname.value == dbUname) {
           //alert("uname done")
           if (Pwd.value == dbPWD) {
-            $(".lock-card").slideUp(300);
-            $(".form").slideDown(300);
+            if (adminName==null) {
+              if (document.querySelector("#adminName").value.length>3) {
+                // alert(document.querySelector("#adminName").value)
+                localStorage.setItem("admin_name", document.querySelector("#adminName").value)
+                $(".lock-card").slideUp(300);
+                $(".form").slideDown(300);
+              }
+            } else{
+              $(".lock-card").slideUp(300);
+                $(".form").slideDown(300);
+            }
             // alert("all")
           } else{
             Pwd.classList.add("inputError")
@@ -533,8 +547,15 @@ var usersStatusDatabaseRef = db.ref('/shopless/admin/status');
 // Get the current user's ID
 // var userId = firebase.auth().currentUser.uid;
 
-// Reference to the current user's status
-var userStatusDatabaseRef = usersStatusDatabaseRef.child(os);
+if(localStorage.getItem("admin_name")!=null){
+  let id = localStorage.getItem("admin_name")
+  var userStatusDatabaseRef = usersStatusDatabaseRef.child(id);
+} else{
+  // Reference to the current user's status
+  var userStatusDatabaseRef = usersStatusDatabaseRef.child(os);
+}
+
+
 
 // Reference to the /.info/connected path in Firebase Realtime Database
 var isOnlineForDatabase = db.ref('.info/connected');
@@ -573,6 +594,13 @@ $(".close_nav").click(function(){
 var themeData = localStorage.getItem("theme")
 if (themeData!=null) {
   document.querySelector("#theme_selector").value=themeData
+  if (themeData=="Light") {
+    document.querySelector(".logo").src="./logo_light.png"
+  }else{
+    if (themeData=="Darck") {
+      document.querySelector(".logo").src="./logo.png"
+    }
+  }
   
   document.body.classList.add(themeData)
 }
@@ -582,11 +610,14 @@ $("#theme_selector").change(function(){
    document.body.classList.add(this.value)
    document.body.classList.remove("Dark")
    localStorage.setItem("theme", "Light")
+   document.querySelector(".logo").src="./logo_light.png"
   } else{
     if (this.value=="Dark") {
       document.body.classList.add(this.value)
       document.body.classList.remove("Light")
       localStorage.setItem("theme", "Dark")
+   document.querySelector(".logo").src="./logo.png"
+
      }
   }
 })
