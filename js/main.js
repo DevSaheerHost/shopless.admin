@@ -60,7 +60,8 @@ $(document).ready(function () {
                   if (vertionValue != localStorage.getItem("vertion")) {
                     $(".uprateCard").slideDown(300)
                     $(".form").slideUp(300);
-                    //localStorage.setItem("vertion", vertionValue)
+                    localStorage.setItem("vertion", vertionValue)
+                    alert(vertionValue)
                   } else{
                     $(".form").slideDown(300)
                     $(".uprateCard").slideUp(300);
@@ -175,7 +176,7 @@ $(document).ready(function () {
           if (Pwd.value == dbPWD) {
             if (adminName==null) {
               if (document.querySelector("#adminName").value.length>3) {
-                // alert(document.querySelector("#adminName").value)
+                //alert(document.querySelector("#adminName").value)
                 localStorage.setItem("admin_name", document.querySelector("#adminName").value)
                 $(".lock-card").slideUp(300);
                 $(".form").slideDown(300);
