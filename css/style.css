@@ -157,7 +157,7 @@ button{
     background-color: var(--dark);
     border-radius: 1rem;
     width:90%;
-    margin: auto;
+    margin: 14px auto;
     padding: 20px;
     max-width: 400px;
     max-height: max-content;
@@ -221,7 +221,7 @@ button svg{
     top: 50%;
     bottom: 50%;
     transform: translateX(50%);
-    RIGHT: 50%;
+    right: 50%;
     
 
 }
@@ -245,7 +245,9 @@ span.menu_btn svg{
     width: 40px;
 }
 
-
+/* main .container{
+    padding-top: 80px;
+} */
 
 
 
@@ -314,3 +316,28 @@ option{
 .nav_card input{
     margin: 0;
 }
+
+
+.cmd{
+    background-color: black;
+    margin: 10px auto;
+}
+.cmd nav h4{
+    margin: 0;
+    padding: 0;
+}
+.cmd nav{
+    background-color: var(--dark);
+    padding: 6px;
+}
+.cmd .text{
+    padding: 10px;
+    text-align: start;
+    
+}
+.cmd .cmdText{
+    display: flex;
+    flex-flow: column;
+    gap: 4px;
+}
+

@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>    
-  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-storage.js"></script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Jersey+10&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Jersey+10&family=Orbitron:wght@400..900&display=swap"
+        rel="stylesheet">
 
     <title>SHOPLESS</title>
 </head>
+
 <body>
     <main>
         <div class="container">
             <header>
                 <div class="container">
                     <span class="menu_btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
-                          </svg>
-                          
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-list" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                        </svg>
+
                     </span>
                     <span class="time_and_logo">
                         <img class="logo" src="./logo.png" alt="LOGO">
@@ -38,16 +45,19 @@
                     <div class="a">
                         shopless.com
                         <a href="https://devsaheerhost.github.io/shopless.com/">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
-                                <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
-                              </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5" />
+                                <path fill-rule="evenodd"
+                                    d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z" />
+                            </svg>
                         </a>
                     </div>
                     <div class="input_group">
                         <input id="path" type="path" placeholder="File Path">
                         <input id="imgURL" type="url" placeholder="Image URL">
-                        
+
 
 
 
@@ -62,9 +72,21 @@
                             <input type="text" name="" id="viu" placeholder="Vareant img URl">
                         </div>
                         <input type="number" name="" id="qty" placeholder="Quantity">
-                        <div class="error"></div>
+
                         <button id="upload">Upload</button>
-                        
+
+                    </div>
+                </div>
+
+                <div class="cmd">
+                    <nav>
+                        <h4>Mini Command Prompt</h4>
+                    </nav>
+                    <div class="text">
+                        <div class="cmdText">
+                            <label for=""># NOw this Read Only Mode</label>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -75,15 +97,17 @@
                     <h3>Shopify</h3>
 
                     <span class="close_nav">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                          </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-x" viewBox="0 0 16 16">
+                            <path
+                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                        </svg>
                     </span>
                 </nav>
                 <div class="container">
                     <h4>Themes</h4>
                     <div class="nav_card card">
-                        <span >
+                        <span>
                             <select name="Theme" id="theme_selector">
                                 <option value="Dark">Dark</option>
                                 <option value="Light">Light</option>
@@ -91,7 +115,7 @@
                                 <option value="Bright">Bright</option> -->
                             </select>
                         </span>
-                        
+
 
                     </div>
                 </div>
@@ -119,24 +143,19 @@
 
         <div class="details">
             <ul class="info">
-                <li style="color: rgb(206, 10, 10);">
-                    <b>IMPORTENT: </b> <i>Enter Your Name On the "Admin Name" TextBox!</i>
-                </li>
                 <li>
                     <label for="">Security Improved</label>
                 </li>
                 <!-- <li>
                     <label for="">Animation added</label>
                 </li> -->
-                    <li>
-                        <label for="">Performens improved</label>
-                    </li>
-                    <li>
-                        <label for="">UI Color Upgraded</label>
-                    </li>
-                    <li>
-                        <label for="">Bug Fixes</label>
-                    </li>
+                <li>
+                    <label for="">New Future Added</label>
+                </li>
+                
+                <li>
+                    <label style="color: yellow;" for="">Bug Not Fixed!</label>
+                </li>
             </ul>
 
             <button id="closeDetails">Close</button>
@@ -144,4 +163,5 @@
     </div>
 </body>
 <script src="js/main.js"></script>
+
 </html>

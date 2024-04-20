@@ -8,8 +8,13 @@ const firebaseConfig = {
   appId: "1:792157900529:web:32d02d2d8b3fe05d94e350",
   measurementId: "G-MZC38NN5BZ"
 };
-
+var cmd = document.querySelector(".cmdText")
+cmd.innerHTML += "<label>> Loading...</label>"
+normArrow = ">"
+$(".cmd").show()
 $(document).ready(function () {
+
+  cmd.innerHTML += "<label>> Reading Paths...</label>"
   var loginBtn = document.querySelector("#loginBTN")
 
   loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
@@ -19,6 +24,7 @@ $(document).ready(function () {
   var database = firebase.database();
 
   let lockref = firebase.database().ref('shopless/admin/');
+  cmd.innerHTML += "<label>> Fetching Security Info...</label>"
 
   // Read the data once
   lockref.once('value', function (snapshot) {
@@ -31,7 +37,9 @@ $(document).ready(function () {
       console.log('Key:', key, 'Value:', value);
 
       if (key == "lock") {
+
         if (value == "") {
+          cmd.innerHTML += "<label>X UnSecured</label>"
           loginBtn.classList.remove("btn_loading")
           loginBtn.innerHTML = `<img class="doneGif" src="./done.gif" alt="">`
           loginBtn.style.border = "solid 1px #41B06E"
@@ -42,6 +50,7 @@ $(document).ready(function () {
           setTimeout(() => {
             $(".lock-card").slideUp(300);
             $(".form").slideDown(300);
+            // $(".cmd").show(300)
 
             let vertionReq = "corrent"
             let vertion = "old"
@@ -56,22 +65,28 @@ $(document).ready(function () {
                 var vertionValue = childSnapshot.val();
 
                 if (vertionKey == "code") {
-                  $("#verText").html("Updated "+ vertionValue)
+                  cmd.innerHTML += "<label>> Checking for updation...</label>"
+                  $("#verText").html("Updated " + vertionValue)
                   if (vertionValue != localStorage.getItem("vertion")) {
                     $(".uprateCard").slideDown(300)
                     $(".form").slideUp(300);
+                    // $(".cmd").hide(300)
                     localStorage.setItem("vertion", vertionValue)
                     alert(vertionValue)
-                  } else{
+                  } else {
                     $(".form").slideDown(300)
                     $(".uprateCard").slideUp(300);
+                    $(".cmd").show(300)
+                    cmd.innerHTML += "<label>> Updated</label>"
                   }
                 }
 
-                $("#closeDetails").click(function(){
+                $("#closeDetails").click(function () {
                   localStorage.setItem("vertion", vertionValue)
                   $(".form").slideDown(300)
-                    $(".uprateCard").slideUp(300);
+                  // $(".cmd").show(300)
+                  $(".uprateCard").slideUp(300);
+                  cmd.innerHTML += "<label>> Updated to " + vertionValue + "</label>"
                 })
 
                 console.log('Key:', vertionKey, 'Value:', vertionValue);
@@ -81,16 +96,19 @@ $(document).ready(function () {
 
 
           }, 2500);
-        } else{
+        } else {
+          // $(".cmd").hide(300)
+          cmd.innerHTML += "<label>> Secured By Admin</label>"
           loginBtn.classList.remove("btn_loading")
           //loginBtn.innerHTML = `<img class="doneGif" src="./done.gif" alt="">`
           //loginBtn.style.border = "solid 1px #41B06E"
           loginBtn.style.background = "#222831"
           loginBTNnormal()
+          //$(".cmd").hide(300)
           //setTimeout(loginBTNnormal, 3000)
           // $("#loginBTN").click(function(){
           //   if (condition) {
-              
+
           //   }
           // })
 
@@ -102,58 +120,62 @@ $(document).ready(function () {
 
           // setTimeout(loginBTNnormal, 3000)
 
-          
-
-            let vertionReq = "corrent"
-            let vertion = "old"
-            let vertionRef = firebase.database().ref('shopless/admin/vertion');
 
 
-            // Read the data once
-            vertionRef.once('value', function (snapshot) {
+          let vertionReq = "corrent"
+          let vertion = "old"
+          let vertionRef = firebase.database().ref('shopless/admin/vertion');
 
-              snapshot.forEach(function (childSnapshot) {
-                var vertionKey = childSnapshot.key;
-                var vertionValue = childSnapshot.val();
+          cmd.innerHTML += "<label>> Checking for Updates...</label>"
+          // Read the data once
+          vertionRef.once('value', function (snapshot) {
 
-                if (vertionKey == "code") {
-                  $("#verText").html("Updated "+ vertionValue)
-                  if (vertionValue != localStorage.getItem("vertion")) {
-                    $(".uprateCard").slideDown(300)
-                    $(".form").slideUp(300);
-                    //localStorage.setItem("vertion", vertionValue)
-                  } else{
-                    $(".lock-card").slideDown(300)
-                    $(".uprateCard").slideUp(300);
-                  }
-                }
+            snapshot.forEach(function (childSnapshot) {
+              var vertionKey = childSnapshot.key;
+              var vertionValue = childSnapshot.val();
 
-                $("#closeDetails").click(function(){
-                  localStorage.setItem("vertion", vertionValue)
+              if (vertionKey == "code") {
+                $("#verText").html("Updated " + vertionValue)
+                if (vertionValue != localStorage.getItem("vertion")) {
+                  cmd.innerHTML += "<label>> Updated to " + vertionValue + "</label>"
+                  $(".uprateCard").slideDown(300)
+                  $(".form").slideUp(300);
+                  //localStorage.setItem("vertion", vertionValue)
+                } else {
                   $(".lock-card").slideDown(300)
-                    $(".uprateCard").slideUp(300);
-                })
+                  $(".uprateCard").slideUp(300);
+                  $(".cmd").show(300)
+                  cmd.innerHTML += "<label>> Corrent version: <b style='color: green'>" + vertionValue + "</b></label>"
+                }
+              }
 
-                console.log('Key:', vertionKey, 'Value:', vertionValue);
+              $("#closeDetails").click(function () {
+                localStorage.setItem("vertion", vertionValue)
+                cmd.innerHTML += "<label>> Updated to <b style='color: green'>" + vertionValue + "</b></label>"
+                $(".lock-card").slideDown(300)
+                $(".uprateCard").slideUp(300);
+              })
 
-              });
+              console.log('Key:', vertionKey, 'Value:', vertionValue);
+
             });
+          });
 
 
-          
 
 
-          
+
+
         }
       }
-      
+
       if (key == "password") {
-         dbPWD = value
+        dbPWD = value
         //alert(key)
       }
       if (key == "username") {
-         dbUname = value
-        console.log("uname=========: "+ dbUname)
+        dbUname = value
+        console.log("uname=========: " + dbUname)
         //alert(value)
       }
     });
@@ -161,44 +183,59 @@ $(document).ready(function () {
   let Uname = document.querySelector("#Uname")
   let Pwd = document.querySelector("#Pwd")
 
-  let adminName= localStorage.getItem("admin_name")
+  let adminName = localStorage.getItem("admin_name")
 
-  if (adminName!=null) {
+  if (adminName != null) {
+    cmd.innerHTML += "<label>> Authorized Admin<b style='color: green;'> " + adminName + "</b></label>"
     $("#adminName").hide(100)
   }
-  
+
   $("#loginBTN").click(function () {
+    cmd.innerHTML += "<label>> Checking Input...</label>"
     if (Uname.value != "") {
       if (Pwd.value != "") {
         // alert(dbUname)
         if (Uname.value == dbUname) {
+          cmd.innerHTML += "<label style='color: green;>> USERNAME Done</label>"
           //alert("uname done")
           if (Pwd.value == dbPWD) {
-            if (adminName==null) {
-              if (document.querySelector("#adminName").value.length>3) {
+            cmd.innerHTML += "<label style='color: green;>> PASSWORD Done</label>"
+            if (adminName == null) {
+              cmd.innerHTML += "<label style='color: yellow;>> New User Detected</label>"
+              if (document.querySelector("#adminName").value.length > 3) {
                 //alert(document.querySelector("#adminName").value)
                 localStorage.setItem("admin_name", document.querySelector("#adminName").value)
                 $(".lock-card").slideUp(300);
                 $(".form").slideDown(300);
+                $(".cmd").show(300)
+                cmd.innerHTML += "<label style='color: green;>> New User Added on <b style='color: yellow;'>" + document.querySelector("#adminName").value + "</b></label>"
               }
-            } else{
+            } else {
               $(".lock-card").slideUp(300);
-                $(".form").slideDown(300);
+              $(".form").slideDown(300);
+              $(".cmd").show(300)
+              cmd.innerHTML += "<label >> Welcome " + adminName + "</label>"
             }
             // alert("all")
-          } else{
+          } else {
+            cmd.innerHTML += "<label style='color: red;>> Password error : " + Pwd.value + "</label>"
             Pwd.classList.add("inputError")
             setTimeout(() => {
               Pwd.classList.remove("inputError")
             }, 1000);
           }
         } else {
+          cmd.innerHTML += "<label style='color: red;>> UserName error : " + Uname.value + " </label>"
           Uname.classList.add("inputError")
           setTimeout(() => {
             Uname.classList.remove("inputError")
           }, 1000);
         }
+      } else {
+        cmd.innerHTML += "<label style='color: red;>> Enter Password </label>"
       }
+    } else {
+      cmd.innerHTML += "<label style='color: red;>> Enter UserName </label>"
     }
   })
 
@@ -224,6 +261,7 @@ $(document).ready(function () {
 
   const uploadBtn = document.querySelector("#upload")
   uploadBtn.addEventListener("click", () => {
+    cmd.innerHTML += "<label>> Updated to <b style='color: green'>" + vertionValue + "</b></label>"
     upload()
   })
   function upload() {
@@ -242,6 +280,7 @@ $(document).ready(function () {
     let wordToCheck = "ads/"
     let filepath = path.value
     if (filepath.includes(wordToCheck)) {
+      cmd.innerHTML += "<label>> Uploading ads to <b style='color: green'>" + filepath + "</b></label>"
       //console.log(contents)
 
 
@@ -273,13 +312,14 @@ $(document).ready(function () {
           postRef.update(update1).then(() => {
             console.log('Update successful!');
 
+
             BTNsuccess()
             setTimeout(BTNnormal, 3000)
 
 
           }).catch((error) => {
             console.error('Update failed: ' + error.message);
-
+            cmd.innerHTML += "<label style='color: red'>>1th ads Update Failed</label>"
             BTNerror()
             setTimeout(BTNnormal, 3000)
           });
@@ -288,6 +328,7 @@ $(document).ready(function () {
           if (userInput == 2) {
             postRef.update(update2).then(() => {
               console.log('Update successful!');
+              cmd.innerHTML += "<label style='color: red'>>2th ads Update Successfull!</label>"
 
               BTNsuccess()
               setTimeout(BTNnormal, 3000)
@@ -406,6 +447,7 @@ $(document).ready(function () {
                             setTimeout(BTNnormal, 3000)
                           });
                         } else {
+                          cmd.innerHTML += "<label style='color: red'>> Maximum ads Limitted</label>"
                           BTNerror()
                           setTimeout(BTNnormal, 3000)
                         }
@@ -419,7 +461,7 @@ $(document).ready(function () {
         }
       } else {
 
-
+        cmd.innerHTML += "<label style='color: red'>> Aborted by Admin</label>"
         BTNerror()
         setTimeout(BTNnormal, 3000)
         // alert("Aborted By Admin.");
@@ -430,6 +472,7 @@ $(document).ready(function () {
       //alert("this is adds " + path.value)
 
     } else {
+      cmd.innerHTML += "<label style='color: green'>> Uploading Products <br> " + name.value + "<br>" + imgUrl.value + "<br>" + price.value + "<br>" + description.value + "<br>"+quantity.value+"<br>"+brand.value+"<br>"+href.value+"</label>"
       postRef.push({
         'product_name': name.value,
         'product_image': imgUrl.value,
@@ -440,23 +483,27 @@ $(document).ready(function () {
         'href': href.value,
       })
         .then(res => {
+          cmd.innerHTML += "<label style='color: green'>> Uploaded Products " + res + "</label>"
           // console.log(res.getKey()) // this will return you ID
           // setTimeout(clearTitle, 50)
           // setTimeout(clearSubTitle, 100)
           // setTimeout(clearImage, 200)
           // setTimeout(clearColor, 300)
           // setTimeout(clearUrl, 400)
+          console.warn(res._delegate.key)
+          cmd.innerHTML += +"> Uploaded Key " + res._delegate.key
 
 
           BTNsuccess()
           setTimeout(BTNnormal, 3000)
 
         })
-        .catch(error => console.log(error));
-      document.querySelector(".error").innerHTML = error
+        .catch(error => console.error(error));
 
-      BTNerror()
-      setTimeout(BTNnormal, 3000)
+      //alert("error")
+
+      // BTNerror()
+      // setTimeout(BTNnormal, 3000)
 
 
 
@@ -515,184 +562,184 @@ $(document).ready(function () {
 
 
 
-  
-
-
-// Get the operating system
-const os = navigator.platform;
-
-// Get the browser's user agent
-const userAgent = navigator.userAgent;
-
-// Get the browser's language
-const language = navigator.language;
-
-// Log the device information
-console.log(`Operating System: ${os}`);
-console.log(`User Agent: ${userAgent}`);
-console.log(`Browser Language: ${language}`);
 
 
 
+  // Get the operating system
+  const os = navigator.platform;
+
+  // Get the browser's user agent
+  const userAgent = navigator.userAgent;
+
+  // Get the browser's language
+  const language = navigator.language;
+
+  // Log the device information
+  console.log(`Operating System: ${os}`);
+  console.log(`User Agent: ${userAgent}`);
+  console.log(`Browser Language: ${language}`);
 
 
 
-// firebase.initializeApp(firebaseConfig);
 
-// Get a reference to the Firebase Realtime Database
-var db = firebase.database();
 
-// Reference to the users' status path in your database
-var usersStatusDatabaseRef = db.ref('/shopless/admin/status');
 
-// Check if admin_name is stored in localStorage and set the userStatusDatabaseRef accordingly
-if(localStorage.getItem("admin_name") != null){
-  let id = localStorage.getItem("admin_name");
-  var userStatusDatabaseRef = usersStatusDatabaseRef.child(id);
-} else {
-  // Reference to the current user's status using a placeholder 'os' variable
-  // Make sure to define 'os' or replace it with the actual user ID or another identifier
-  var userStatusDatabaseRef = usersStatusDatabaseRef.child(os);
-}
+  // firebase.initializeApp(firebaseConfig);
 
-// Function to format the timestamp into a human-readable date and time
-function formatTimestamp(timestamp) {
-  var date = new Date(timestamp);
-  var formattedDate = date.toLocaleDateString('en-IN') + ' ' + date.toLocaleTimeString('en-IN');
-  return formattedDate;
-}
+  // Get a reference to the Firebase Realtime Database
+  var db = firebase.database();
 
-// Reference to the /.info/connected path in Firebase Realtime Database
-var isOnlineForDatabase = db.ref('.info/connected');
-isOnlineForDatabase.on('value', function(snapshot) {
-  // If we're not currently connected, don't do anything
-  $(".status").html("Online|")
-  if (snapshot.val() == false) {
-    return;
-  };
+  // Reference to the users' status path in your database
+  var usersStatusDatabaseRef = db.ref('/shopless/admin/status');
 
-  
-  // If we are currently connected, then use the 'onDisconnect()' method
-  userStatusDatabaseRef.onDisconnect().update({
-    status: 'offline',
-    last_changed: firebase.database.ServerValue.TIMESTAMP
-  }).then(function() {
-    
-    // Get the server timestamp and convert it to a human-readable format
-    db.ref('.info/serverTimeOffset').once('value').then(function(offsetSnapshot) {
-      var serverTime = Date.now() + offsetSnapshot.val();
-      var formattedTime = formatTimestamp(serverTime);
+  // Check if admin_name is stored in localStorage and set the userStatusDatabaseRef accordingly
+  if (localStorage.getItem("admin_name") != null) {
+    let id = localStorage.getItem("admin_name");
+    var userStatusDatabaseRef = usersStatusDatabaseRef.child(id);
+  } else {
+    // Reference to the current user's status using a placeholder 'os' variable
+    // Make sure to define 'os' or replace it with the actual user ID or another identifier
+    var userStatusDatabaseRef = usersStatusDatabaseRef.child(os);
+  }
 
-      // Set our user's online status to 'online' with the formatted timestamp
-      userStatusDatabaseRef.update({
-        status: 'online',
-        last_changed: formattedTime
+  // Function to format the timestamp into a human-readable date and time
+  function formatTimestamp(timestamp) {
+    var date = new Date(timestamp);
+    var formattedDate = date.toLocaleDateString('en-IN') + ' ' + date.toLocaleTimeString('en-IN');
+    return formattedDate;
+  }
+
+  // Reference to the /.info/connected path in Firebase Realtime Database
+  var isOnlineForDatabase = db.ref('.info/connected');
+  isOnlineForDatabase.on('value', function (snapshot) {
+    // If we're not currently connected, don't do anything
+    $(".status").html("Online|")
+    if (snapshot.val() == false) {
+      return;
+    };
+
+
+    // If we are currently connected, then use the 'onDisconnect()' method
+    userStatusDatabaseRef.onDisconnect().update({
+      status: 'offline',
+      last_changed: firebase.database.ServerValue.TIMESTAMP
+    }).then(function () {
+
+      // Get the server timestamp and convert it to a human-readable format
+      db.ref('.info/serverTimeOffset').once('value').then(function (offsetSnapshot) {
+        var serverTime = Date.now() + offsetSnapshot.val();
+        var formattedTime = formatTimestamp(serverTime);
+
+        // Set our user's online status to 'online' with the formatted timestamp
+        userStatusDatabaseRef.update({
+          status: 'online',
+          last_changed: formattedTime
+        });
       });
     });
   });
-});
 
-// Listen for changes in the user's status and log the status change with the formatted timestamp
-userStatusDatabaseRef.on('value', function(snapshot) {
-  if(snapshot.val() != null){
-    console.log('User status changed to: ' + snapshot.val().status);
-    console.log('Time: ' + snapshot.val().last_changed);
-    
-  }
-});
+  // Listen for changes in the user's status and log the status change with the formatted timestamp
+  userStatusDatabaseRef.on('value', function (snapshot) {
+    if (snapshot.val() != null) {
+      console.log('User status changed to: ' + snapshot.val().status);
+      console.log('Time: ' + snapshot.val().last_changed);
 
-
-$(".side_menu").slideUp(0)
-
-$(".menu_btn").click(function(){
-  $(".side_menu").slideDown(200)
-})
-$(".close_nav").click(function(){
-  $(".side_menu").slideUp(200)
-})
-
-
-
-// Function to call when connected to the internet
-function onInternetConnected() {
-  console.log("Internet connection is now available.");
-  // Perform actions when internet is connected
-}
-
-// Function to call when disconnected from the internet
-function onInternetDisconnected() {
-  $(".status").html("Offline")
-  // Perform actions when internet is disconnected
-}
-
-// Add event listeners for the online and offline events
-window.addEventListener('online', onInternetConnected);
-window.addEventListener('offline', onInternetDisconnected);
-
-// Initial check for internet connection
-if(navigator.onLine) {
-  onInternetConnected();
-} else {
-  onInternetDisconnected();
-}
-
-
-
-
-
-var themeData = localStorage.getItem("theme")
-if (themeData!=null) {
-  document.querySelector("#theme_selector").value=themeData
-  if (themeData=="Light") {
-    document.querySelector(".logo").src="./logo_light.png"
-  }else{
-    if (themeData=="Darck") {
-      document.querySelector(".logo").src="./logo.png"
     }
-  }
-  
-  document.body.classList.add(themeData)
-}
+  });
 
-$("#theme_selector").change(function(){
-  if (this.value=="Light") {
-   document.body.classList.add(this.value)
-   document.body.classList.remove("Dark")
-   localStorage.setItem("theme", "Light")
-   document.querySelector(".logo").src="./logo_light.png"
-  } else{
-    if (this.value=="Dark") {
+
+  $(".side_menu").slideUp(0)
+
+  $(".menu_btn").click(function () {
+    $(".side_menu").slideDown(200)
+  })
+  $(".close_nav").click(function () {
+    $(".side_menu").slideUp(200)
+  })
+
+
+
+  // Function to call when connected to the internet
+  function onInternetConnected() {
+    console.log("Internet connection is now available.");
+    // Perform actions when internet is connected
+  }
+
+  // Function to call when disconnected from the internet
+  function onInternetDisconnected() {
+    $(".status").html("Offline")
+    // Perform actions when internet is disconnected
+  }
+
+  // Add event listeners for the online and offline events
+  window.addEventListener('online', onInternetConnected);
+  window.addEventListener('offline', onInternetDisconnected);
+
+  // Initial check for internet connection
+  if (navigator.onLine) {
+    onInternetConnected();
+  } else {
+    onInternetDisconnected();
+  }
+
+
+
+
+
+  var themeData = localStorage.getItem("theme")
+  if (themeData != null) {
+    document.querySelector("#theme_selector").value = themeData
+    if (themeData == "Light") {
+      document.querySelector(".logo").src = "./logo_light.png"
+    } else {
+      if (themeData == "Darck") {
+        document.querySelector(".logo").src = "./logo.png"
+      }
+    }
+
+    document.body.classList.add(themeData)
+  }
+
+  $("#theme_selector").change(function () {
+    if (this.value == "Light") {
       document.body.classList.add(this.value)
-      document.body.classList.remove("Light")
-      localStorage.setItem("theme", "Dark")
-   document.querySelector(".logo").src="./logo.png"
+      document.body.classList.remove("Dark")
+      localStorage.setItem("theme", "Light")
+      document.querySelector(".logo").src = "./logo_light.png"
+    } else {
+      if (this.value == "Dark") {
+        document.body.classList.add(this.value)
+        document.body.classList.remove("Light")
+        localStorage.setItem("theme", "Dark")
+        document.querySelector(".logo").src = "./logo.png"
 
-     }
-  }
+      }
+    }
+  })
+
+
+
 })
 
 
 
-})
 
 
-
-
-
-navigator.getBattery().then(function(battery) {
+navigator.getBattery().then(function (battery) {
   function updateBatteryStatus() {
     console.log("Battery charge level: " + (battery.level * 100) + "%");
     console.log("Battery charging: " + (battery.charging ? "Yes" : "No"));
     console.log("Battery charging time: " + (battery.chargingTime / 60) + " minutes");
     console.log("Battery discharging time: " + (battery.dischargingTime / 60) + " minutes");
-bl=battery.level * 100
-    if (bl<20) {
-      alert("Your battery too low: "+ bl+"%")
-    }let bc = battery.charging ? "Yes" : "No"
-    if (bc=="Yes") {
-     if (bl>90) {
-      alert("Battery Aproximatly done: "+bl+"%") 
-     }
+    bl = battery.level * 100
+    if (bl < 20) {
+      alert("Your battery too low: " + bl + "%")
+    } let bc = battery.charging ? "Yes" : "No"
+    if (bc == "Yes") {
+      if (bl > 90) {
+        alert("Battery Aproximatly done: " + bl + "%")
+      }
     }
   }
 
@@ -700,16 +747,16 @@ bl=battery.level * 100
   updateBatteryStatus();
 
   // Set up event listeners to update the status whenever it changes
-  battery.addEventListener('chargingchange', function() {
+  battery.addEventListener('chargingchange', function () {
     updateBatteryStatus();
   });
-  battery.addEventListener('levelchange', function() {
+  battery.addEventListener('levelchange', function () {
     updateBatteryStatus();
   });
-  battery.addEventListener('chargingtimechange', function() {
+  battery.addEventListener('chargingtimechange', function () {
     updateBatteryStatus();
   });
-  battery.addEventListener('dischargingtimechange', function() {
+  battery.addEventListener('dischargingtimechange', function () {
     updateBatteryStatus();
   });
 
