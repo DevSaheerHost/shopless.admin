@@ -744,9 +744,9 @@ navigator.getBattery().then(function (battery) {
   function updateBatteryStatus() {
     console.log("Battery charge level: " + (battery.level * 100) + "%");
     cmd.innerHTML += `<p>> Battery charge level : <span style="color: blue;">${battery.level * 100}%</span></p>`
-    cmd.innerHTML +="<p>> Battery charging: <span style='color: blue;'>" + (battery.charging ? "Yes" : "No");
-    cmd.innerHTML +="<p>> Battery charging time: <span style='color: blue;'>" + (battery.chargingTime / 60) + " minutes"
-    cmd.innerHTML +="<p>> Battery discharging time: <span style='color: blue;'>" + (battery.dischargingTime / 60) + " minutes"
+    // cmd.innerHTML +="<p>> Battery charging: <span style='color: blue;'>" + (battery.charging ? "Yes" : "No");
+    // cmd.innerHTML +="<p>> Battery charging time: <span style='color: blue;'>" + (battery.chargingTime / 60) + " minutes"
+    // cmd.innerHTML +="<p>> Battery discharging time: <span style='color: blue;'>" + (battery.dischargingTime / 60) + " minutes"
     bl = battery.level * 100
     if (bl < 20) {
       alert("Your battery too low: " + bl + "%")
