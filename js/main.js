@@ -261,7 +261,7 @@ $(document).ready(function () {
 
   const uploadBtn = document.querySelector("#upload")
   uploadBtn.addEventListener("click", () => {
-    cmd.innerHTML += "<label>> Updated to <b style='color: green'>" + vertionValue + "</b></label>"
+    cmd.innerHTML += "<label>> Trying to upload somthing</label>"
     upload()
   })
   function upload() {
@@ -472,7 +472,7 @@ $(document).ready(function () {
       //alert("this is adds " + path.value)
 
     } else {
-      cmd.innerHTML += "<label style='color: green'>> Uploading Products <br> " + name.value + "<br>" + imgUrl.value + "<br>" + price.value + "<br>" + description.value + "<br>"+quantity.value+"<br>"+brand.value+"<br>"+href.value+"</label>"
+      cmd.innerHTML += "<label>> Uploading Products <br><p style='color: green'> " + name.value + "<br>> " + imgUrl.value + "<br>> " + price.value + "<br>> " + description.value + "<br>> "+quantity.value+"<br>> "+brand.value+"<br>> "+href.value+"</p></label>"
       postRef.push({
         'product_name': name.value,
         'product_image': imgUrl.value,
@@ -483,7 +483,7 @@ $(document).ready(function () {
         'href': href.value,
       })
         .then(res => {
-          cmd.innerHTML += "<label style='color: green'>> Uploaded Products " + res + "</label>"
+          cmd.innerHTML += "<label >> Uploaded Products <p style='color: green'> " + res + "</p></label>"
           // console.log(res.getKey()) // this will return you ID
           // setTimeout(clearTitle, 50)
           // setTimeout(clearSubTitle, 100)
@@ -512,6 +512,7 @@ $(document).ready(function () {
 
 
   }
+  
 
 
   //-------
