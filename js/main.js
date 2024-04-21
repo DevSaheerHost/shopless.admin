@@ -472,7 +472,7 @@ $(document).ready(function () {
       //alert("this is adds " + path.value)
 
     } else {
-      cmd.innerHTML += "<label>> Uploading Products <br><p style='color: green'> " + name.value + "<br>> " + imgUrl.value + "<br>> " + price.value + "<br>> " + description.value + "<br>> "+quantity.value+"<br>> "+brand.value+"<br>> "+href.value+"</p></label>"
+      cmd.innerHTML += "<div <label>> Uploading Products <br>> Product name : <p style='color: blue'>  " + name.value + "</p><br>> Product Image : <p style='color: blue'> " + imgUrl.value + "</p><br>> Product blue : <p style='color: blue;'> " + price.value + "</p><br>> Product Description : <p style='color: blue'> " + description.value + "</p><br>> Product Quantity : <p style='color: blue'> " + quantity.value + "</p><br>> Product Brand : <p style='color: blue'> " + brand.value + "</p><br>> Product Page : <p style='color: blue'> " + href.value + "</p></label></div>"
       postRef.push({
         'product_name': name.value,
         'product_image': imgUrl.value,
@@ -483,15 +483,15 @@ $(document).ready(function () {
         'href': href.value,
       })
         .then(res => {
-          cmd.innerHTML += "<label >> Uploaded Products <p style='color: green'> " + res + "</p></label>"
+          cmd.innerHTML += "<label >> Uploaded Products to <p style='color: green'> " + res._delegate._path + "</p></label>"
           // console.log(res.getKey()) // this will return you ID
           // setTimeout(clearTitle, 50)
           // setTimeout(clearSubTitle, 100)
           // setTimeout(clearImage, 200)
           // setTimeout(clearColor, 300)
           // setTimeout(clearUrl, 400)
-          console.warn(res._delegate.key)
-          cmd.innerHTML += +"> Uploaded Key " + res._delegate.key
+          console.warn(res._delegate._path)
+          cmd.innerHTML +="> Uploaded Path Key : " + res._delegate.key
 
 
           BTNsuccess()
@@ -512,7 +512,7 @@ $(document).ready(function () {
 
 
   }
-  
+
 
 
   //-------
@@ -580,6 +580,9 @@ $(document).ready(function () {
   console.log(`User Agent: ${userAgent}`);
   console.log(`Browser Language: ${language}`);
 
+  cmd.innerHTML += `<p style="display: block;">> OS : ${os}</p>`
+  cmd.innerHTML += `<p>> User Agent : <span style="color:green;"> ${userAgent}</sapn></p>`
+  cmd.innerHTML += `<p>> Browser Language : <span style="color:green;">${language}</span></p>`
 
 
 
@@ -615,6 +618,7 @@ $(document).ready(function () {
   isOnlineForDatabase.on('value', function (snapshot) {
     // If we're not currently connected, don't do anything
     $(".status").html("Online|")
+    cmd.innerHTML += `<p>> Status <span style="color: green;"Online</span></p>`
     if (snapshot.val() == false) {
       return;
     };
@@ -635,6 +639,8 @@ $(document).ready(function () {
         userStatusDatabaseRef.update({
           status: 'online',
           last_changed: formattedTime
+        }).then(function(){
+          cmd.innerHTML += `<label>> User status : <b><span style="color: green;">online</span><b></label>`
         });
       });
     });
@@ -645,6 +651,9 @@ $(document).ready(function () {
     if (snapshot.val() != null) {
       console.log('User status changed to: ' + snapshot.val().status);
       console.log('Time: ' + snapshot.val().last_changed);
+      cmd.innerHTML += `<p>> User status changed to: <span style="color: green;">${snapshot.val().status}</span></p>`
+
+
 
     }
   });
@@ -690,11 +699,14 @@ $(document).ready(function () {
 
   var themeData = localStorage.getItem("theme")
   if (themeData != null) {
+    cmd.innerHTML += `<p>> User Theme : <span style="color: blue;">${themeData}</span></p>`
     document.querySelector("#theme_selector").value = themeData
     if (themeData == "Light") {
       document.querySelector(".logo").src = "./logo_light.png"
+      cmd.innerHTML += `<p>> User Theme : <span style="color: blue;">Light</span></p>`
     } else {
       if (themeData == "Darck") {
+        cmd.innerHTML += `<p>> User Theme : <span style="color: blue;">Darck</span></p>`
         document.querySelector(".logo").src = "./logo.png"
       }
     }
@@ -703,6 +715,7 @@ $(document).ready(function () {
   }
 
   $("#theme_selector").change(function () {
+    cmd.innerHTML += `<p>> User Theme changed to : <span style="color: blue;">${this.value}</span></p>`
     if (this.value == "Light") {
       document.body.classList.add(this.value)
       document.body.classList.remove("Dark")
@@ -730,9 +743,10 @@ $(document).ready(function () {
 navigator.getBattery().then(function (battery) {
   function updateBatteryStatus() {
     console.log("Battery charge level: " + (battery.level * 100) + "%");
-    console.log("Battery charging: " + (battery.charging ? "Yes" : "No"));
-    console.log("Battery charging time: " + (battery.chargingTime / 60) + " minutes");
-    console.log("Battery discharging time: " + (battery.dischargingTime / 60) + " minutes");
+    cmd.innerHTML += `<p>> Battery charge level : <span style="color: blue;">${battery.level * 100}%</span></p>`
+    cmd.innerHTML +="<p>> Battery charging: <span style='color: blue;'>" + (battery.charging ? "Yes" : "No");
+    cmd.innerHTML +="<p>> Battery charging time: <span style='color: blue;'>" + (battery.chargingTime / 60) + " minutes"
+    cmd.innerHTML +="<p>> Battery discharging time: <span style='color: blue;'>" + (battery.dischargingTime / 60) + " minutes"
     bl = battery.level * 100
     if (bl < 20) {
       alert("Your battery too low: " + bl + "%")

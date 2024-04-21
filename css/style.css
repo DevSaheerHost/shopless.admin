@@ -340,4 +340,7 @@ option{
     flex-flow: column;
     gap: 4px;
 }
-
+.cmd p{
+    display: inline;
+    margin-bottom: 8px;
+}
