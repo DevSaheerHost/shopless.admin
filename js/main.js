@@ -68,14 +68,14 @@ $(document).ready(function () {
                   cmd.innerHTML += "<label>> Checking for updation...</label>"
                   $("#verText").html("Updated " + vertionValue)
                   if (vertionValue != localStorage.getItem("vertion")) {
-                    $(".uprateCard").slideDown(300)
+                    $(".updateCard").slideDown(300)
                     $(".form").slideUp(300);
                     // $(".cmd").hide(300)
                     localStorage.setItem("vertion", vertionValue)
                     alert(vertionValue)
                   } else {
                     $(".form").slideDown(300)
-                    $(".uprateCard").slideUp(300);
+                    $(".updateCard").slideUp(300);
                     $(".cmd").show(300)
                     cmd.innerHTML += "<label>> Updated</label>"
                   }
@@ -85,7 +85,7 @@ $(document).ready(function () {
                   localStorage.setItem("vertion", vertionValue)
                   $(".form").slideDown(300)
                   // $(".cmd").show(300)
-                  $(".uprateCard").slideUp(300);
+                  $(".updateCard").slideUp(300);
                   cmd.innerHTML += "<label>> Updated to " + vertionValue + "</label>"
                 })
 
@@ -138,12 +138,12 @@ $(document).ready(function () {
                 $("#verText").html("Updated " + vertionValue)
                 if (vertionValue != localStorage.getItem("vertion")) {
                   cmd.innerHTML += "<label>> Updated to " + vertionValue + "</label>"
-                  $(".uprateCard").slideDown(300)
+                  $(".updateCard").slideDown(300)
                   $(".form").slideUp(300);
                   //localStorage.setItem("vertion", vertionValue)
                 } else {
                   $(".lock-card").slideDown(300)
-                  $(".uprateCard").slideUp(300);
+                  $(".updateCard").slideUp(300);
                   $(".cmd").show(300)
                   cmd.innerHTML += "<label>> Corrent version: <b style='color: green'>" + vertionValue + "</b></label>"
                 }
@@ -153,7 +153,7 @@ $(document).ready(function () {
                 localStorage.setItem("vertion", vertionValue)
                 cmd.innerHTML += "<label>> Updated to <b style='color: green'>" + vertionValue + "</b></label>"
                 $(".lock-card").slideDown(300)
-                $(".uprateCard").slideUp(300);
+                $(".updateCard").slideUp(300);
               })
 
               console.log('Key:', vertionKey, 'Value:', vertionValue);
@@ -235,7 +235,7 @@ $(document).ready(function () {
         cmd.innerHTML += "<label style='color: red;>> Enter Password </label>"
       }
     } else {
-      cmd.innerHTML += "<label style='color: red;>> Enter UserName </label>"
+      cmd.innerHTML += "<p style='color: red;>> Enter UserName </p>"
     }
   })
 
@@ -447,7 +447,7 @@ $(document).ready(function () {
                             setTimeout(BTNnormal, 3000)
                           });
                         } else {
-                          cmd.innerHTML += "<label style='color: red'>> Maximum ads Limitted</label>"
+                          cmd.innerHTML += "<label style='color: red'>> Maximum ads Limitted by 9 </label>"
                           BTNerror()
                           setTimeout(BTNnormal, 3000)
                         }
