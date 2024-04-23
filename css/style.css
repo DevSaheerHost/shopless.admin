@@ -118,6 +118,7 @@ input, button{
     border: 1px solid gray;
     outline: none;
 }
+
 input{
     background-color: var(--body);
     color: var(--a);
@@ -367,4 +368,15 @@ option{
     display: inline;
     margin-top: 4px;
     margin-bottom: 4px;
+}
+
+
+li a{
+    font-size: medium;
+    font-weight: unset;
+    font-size: small;
+    color: blue !important;
+    margin: 0;
+    padding: 0;
+    display: inline !important;
 }

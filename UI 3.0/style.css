@@ -1,0 +1,337 @@
+*{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0 0 0 0;
+  border: 0;
+  outline: 0;
+  transition: all .3s;
+  
+}
+:root{
+  --white: #fafafa;
+  --primary: #484b6a;
+  --border-radius: .3rem;
+  --border: 1px solid var(--primary);
+}
+body
+{
+  background: var(--white);
+  display: none;
+}
+.devLogo{
+  color: var(--primary);
+  border: var(--border);
+  border-width: 2px;
+  padding: 3px 12px;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+}
+header {
+  background: white;
+  padding: 20px 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+header .container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+main{
+  margin-top: 70px;
+}
+main .container{
+  padding: 10px 20px;
+  width: 100%;
+}
+
+
+.card{
+  
+  margin-top: 30px !important;
+  background: white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  
+  padding: 20px;
+  max-width: 90px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  display: block;
+  min-width: fit-content;
+  width: auto;
+  margin: auto;
+  border-radius: .6rem
+}
+.card .heading-wrapper{
+  display: block;
+  margin-bottom: 20px;
+  color: var(--primary);
+}
+.card .see-more-btn{
+  text-align: center;
+}
+
+.input-group label{
+  color: #9394a5;
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+.input-group{
+  margin: auto;
+  max-width: min-content;
+  display: block;
+  
+}
+.input-name-wrapper{
+  display: flex;
+  align-items: center;
+  color: #9394a5;
+  gap: 8px;
+}
+
+input{
+  padding: 6px 20px;
+  font-size: 1rem;
+  border: var(--border);
+  border-color: #9394a5;
+  color: var(--primary);
+  border-radius: var(--border-radius);
+  margin: 10px auto;
+  transition: all .2s;
+  margin-top: 0;
+}
+button{
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: var(--border-radius);
+  background: var(--primary);
+  color: var(--white);
+  margin-top: 20px;
+  
+  
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 55px;
+  margin: auto;
+  display: block;
+  margin-top: 10px;
+  transition: all 0.3s ease 0s;
+  
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  font-weight: bold;
+}
+button:hover{
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+  background: var(--primary);
+  color: var(--white);
+  
+}
+input:focus{
+  border: var(--border);
+  background: #d2d3db;
+  color: var(--primary);
+}
+
+::placeholder{
+  color: #d2d3db;
+}
+
+#less, #seeMore{
+  color: var(--primary);
+  font-weight: bold;
+}
+#less{
+  display: none ;
+}
+.menu-btn{
+  color: var(--primary);
+}
+
+
+.lock{
+  position: fixed;
+  top: 0;left: 0;right: 0;bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  height: 100%;
+  z-index: 6;
+}
+.lock .card{
+  display: block;
+  transform: translateY(50%)
+}
+.lock .icon{
+  margin: auto;
+  text-align: center;
+  display: block;
+  margin-bottom: 20px;
+  color: var(--primary);
+}
+.lock .input-group label{
+  color: #9394a5;
+  margin: 0px;
+}
+/* .lock .icon .span{
+  height: 50px;
+  width: 50px;
+} */
+.lock label{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lock button.login{
+  margin-right: 0;
+}
+.notification{
+  position: fixed;
+  top: 7px;
+  left: 0;
+  right: 0;
+  transform: translateY(-130px);
+  animation: g 3s ease-out;
+  z-index: 999;
+  
+}
+.notification .card{
+  border: 1px var(--primary) solid;
+  color: var(--primary);
+  border-radius: var(--border-radius);
+  
+  min-width: max-content;
+  max-width: 90%;
+  width: 80%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  
+}
+.notification .time{
+  transform: translateY(-3.2px);
+  height: 3px;
+  width: 0;
+  margin-left: 1.2px;
+  background: var(--primary);
+  animation: g 3s ease-out;
+  border-radius: 535px;
+  
+}
+.noti-wrapper{
+  width: max-content;
+  margin: auto;
+}
+
+.notificationShow{
+  animation: show 3s ease-out;
+  transform: translateY(0);
+}
+.closeNotif{
+  display: block;
+  margin-left: 50px;
+}
+
+@keyframes show{
+  0%{
+    transform: translateY(-130px);
+  }
+  13%{
+    transform: translateY(7px)
+  }
+  15%, 85%{
+    transform: translateY(0);
+  }
+  88%{
+    transform: translateY(5px)
+  }
+  
+}
+.timeLoad{
+  transition: all 3s ease-in-out;
+  width: 98% !important;
+  
+}
+
+@keyframes time{
+  0%{
+    width: 5%;
+  }
+  
+}
+
+
+aside{
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 5;
+  transition: all .4s ease-in-out;
+}
+aside .side-menu{
+  
+  height: 100%;
+  width: 0%;
+  background: var(--white);
+  box-shadow: 0 0 15 rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: all .5s ease-in-out;
+}
+.side-menu-open{
+  width: 70%;
+}
+.side-menu .side-container{
+  padding: 20px;
+}
+
+
+.menu-header{
+  background: white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+.thredot-menu{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  border-radius: var(--border-radius);
+  
+  display: none;
+  color: gray;
+}
+.thredot-menu .thredot-container{
+  padding: 5px 10px;
+  
+}
+.thredot-menu-item{
+  border-bottom: 1px solid darkgray;
+  padding: 3px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
+  
+}
+.thredot-close{
+  display: flex;
+  justify-content: end;
+}
