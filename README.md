@@ -1,2 +1,2 @@
 # shopless.admin
-# shopless.admin
+Admin control of the site
