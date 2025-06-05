@@ -929,36 +929,68 @@ allPaths.forEach(path => {
 });
 
 
-document.querySelector('#openCreatePath').onclick = () => {
-  const $ = selector => document.querySelector(selector);
-  $('.path_creation_page').classList.remove('hidden');
 
-  const createBtn = $('.path_creation_page button');
-  const inputField = $('.path_creation_page input');
 
-  // Avoid duplicate event listeners
+// Load saved paths into the <select> on startup
+function populatePathSelector() {
+  const $ = s => document.querySelector(s);
+  const selector = document.getElementById('pathSelector')
+  try {
+    const paths = JSON.parse(localStorage.getItem('paths')) || [];
+    paths.forEach(path => {
+      if (![...selector.options].some(option => option.value === path)) {
+        const opt = document.createElement('option');
+        opt.value = path;
+        opt.textContent = path;
+        selector.appendChild(opt);
+      }
+    });
+  } catch (e) {
+    console.error("Failed to load paths:", e);
+  }
+}
+
+// Add a single path to the <select>
+function addPathToSelector(path) {
+  if (![...selector.options].some(option => option.value === path)) {
+    const opt = document.createElement('option');
+    opt.value = path;
+    opt.textContent = path;
+    selector.appendChild(opt);
+  }
+}
+
+// On page load
+populatePathSelector();
+const $$ = s=> document.querySelector(s)
+$$('#openCreatePath').onclick = () => {
+  $$('.path_creation_page').classList.remove('hidden');
+
+  const createBtn = $$('.path_creation_page button');
+  const inputField = $$('.path_creation_page input');
+
   if (!createBtn.dataset.listenerAdded) {
     createBtn.onclick = () => {
       try {
         const path = inputField.value.trim();
-
         if (!path) return alert("Please enter a valid path");
 
-        // Get existing paths from localStorage or initialize empty array
         const stored = JSON.parse(localStorage.getItem('paths')) || [];
 
-        // Check for duplicates (optional)
         if (!stored.includes(path)) {
           stored.push(path);
           localStorage.setItem('paths', JSON.stringify(stored));
+
+          addPathToSelector(path);
+
           alert("Path created: " + path);
-          cmd.innerHTML+='[INFO] Path added - ' + path +`<br>`
+          cmd.innerHTML += '[INFO] Path added - ' + path + `<br>`;
         } else {
           alert("You've already set this path");
-          cmd.innerHTML+='Operation failed: existing path detected <br>'
+          cmd.innerHTML += 'Operation failed: existing path detected <br>';
         }
 
-        inputField.value = ''; // Clear input
+        inputField.value = '';
       } catch (e) {
         console.error("Storage error:", e);
       }
