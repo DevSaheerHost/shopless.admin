@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-storage.js"></script>
+    
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -77,6 +75,38 @@
 
                     </div>
                 </div>
+                
+                <div class="listPage hidden">
+                <h3>Edit Data</h3>
+                
+               <div class="path flex">
+                    <select name="pathSelector" id="pathSelector" class="">
+     <option value="shopless/home/fresh_deals">shopless/home/fresh_deals</option>
+     
+     <option value="shopless/products">shopless/products</option>
+     
+     <option value="shopless/products/cables">shopless/products/cables</option>
+     
+     <option value="shopless/root">shopless/root</option>
+ </select>
+ 
+ <span class="create" id="openCreatePath">+</span>
+               </div>
+                <div class="list" id="editList">
+                    <div class="item">
+                        <img src="" alt="" />
+                        <div>
+                            <input type="text" name="name" id="name" value="" placeholder="Product name" />
+                            <input type="text" name="description" id="description" value="" />
+                            <input type="text" name="price" id="price" value=""
+                            placeholder="Product Price"/>
+                            <input type="text" name="imageUrl" id="imageUrl" value="" placeholder="Product Image" />
+                            
+                            <button class="update">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
                 <div class="cmd">
                     <nav>
@@ -90,6 +120,10 @@
                     </div>
                 </div>
             </div>
+            
+            
+            
+            
 
 
             <div class="side_menu">
@@ -117,6 +151,20 @@
                         </span>
 
 
+                    </div>
+                    
+                    <h4>Table</h4>
+                    
+                    
+                     <div class="nav_item" id="addData">
+                        <span>
+                            <p>Add Data</p>
+                        </span>
+                    </div>
+                    <div class="nav_item" id="editData">
+                        <span>
+                            <p>Edit Data</p>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -167,7 +215,20 @@
             </div>
         </div>
     </div>
+    
+    <div class="path_creation_page hidden">
+        <div class="form">
+            <h3>Create new path</h3>
+            <input type="text" name="newPath" id="newPath" value="" placeholder="EG: shopless/parent/child"/>
+            <div class="">
+                
+           
+            <button class="create_path">Create new path</button>
+            <button class="close_creation_page">Close</button>
+            </div>
+        </div>
+    </div>
 </body>
-<script src="js/main.js"></script>
+<script src="js/main.js" type="module"></script>
 
 </html>

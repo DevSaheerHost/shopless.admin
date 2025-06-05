@@ -173,6 +173,7 @@ button{
     margin: auto;
     width: auto;
     position: relative;
+    display: none;
 }
 /* .uprateCard{
     border: 3px solid var(--primary);
@@ -198,6 +199,7 @@ button{
     right: 0;
 }
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
+
 
 .updateCard .details{
     padding: 20px;
@@ -278,11 +280,29 @@ span.menu_btn svg{
     top: 0;
     left: 0;
     bottom: 0;
-    width: 70%;
+    width: 0%;
     background-color: var(--dark);
     border: 2px solid var(--dark);
     z-index: 3;
+    height: 100vh;
+    overflow: hidden;
     /* display: none; */
+    h4{
+        text-align: start;
+        padding-inline-start: 1rem;
+    }
+    .nav_item{
+        padding: .5rem 1rem;
+        background: #42445A;
+        margin-bottom: .5rem;
+        span{
+            justify-content: space-between;
+            font-weight: 500;
+        }
+    }
+}
+.side_menu.open{
+    width: 70%;
 }
 
 .close_nav svg{
@@ -379,4 +399,122 @@ li a{
     margin: 0;
     padding: 0;
     display: inline !important;
+}
+
+
+
+/* ---------- List page --------- */
+
+.listPage{
+    width: 100%;
+    .path.flex{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #505375;
+        border-radius: 10px;
+        padding: .5rem 1rem;
+        margin: 0 1rem;
+        
+        .create{
+            height: 50px;
+            min-width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            border-radius: 100%;
+            background: #626583;
+            color: #fff;
+            
+        }
+    }
+    
+    select{
+        width: 90%;
+        padding: 1rem;
+        font-weight: 700;
+        font-size: 20px;
+        background: transparent;
+        
+        border-radius: 10px;
+        color: #fff;
+    }
+    
+    .list{
+        
+        .item{
+            position: relative;
+            display: block;
+            padding: 2rem;
+            gap: 1rem;
+            border-bottom: 1px solid #505375;
+            img{
+                width: 100%;
+                height: 200px;
+                border-radius: 10px;
+                object-fit: contain;
+            }
+            
+            div{
+                overflow: hidden;
+                input{
+                    max-width: 100% !important;
+                }
+                
+                button{
+                    padding: .7rem 1rem;
+                }
+            }
+            
+            .delete{
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                background: #B60000;
+                color: #fff;
+                font-size: 13px;
+                border-radius: 10px;
+                padding: .3rem .8rem;
+            }
+        }
+    }
+}
+
+
+/*---------- create page ---------*/
+
+.path_creation_page{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    .form{
+        background: var(--dark);
+        padding: 2rem;
+            border-radius: 10px;
+        button.create_path {
+            min-width: max-content;
+            word-wrap: nowrap;
+            padding: 1rem;
+        }
+        
+        .close_creation_page{
+            background: transparent;
+            border: 1px solid var(--primary);
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.hidden{
+    display: none !important;
+}
+locsk{
+    display: none !important;
 }

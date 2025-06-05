@@ -1,3 +1,6 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js"; import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js"; import { getDatabase, ref, child, get, onValue, onChildAdded, onChildChanged, onChildRemoved, update, push, serverTimestamp, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyCsTD5XSRNl7VG-i6Ir0F3D1X1PxWk2Rfs",
   authDomain: "shopify-30670.firebaseapp.com",
@@ -8,178 +11,141 @@ const firebaseConfig = {
   appId: "1:792157900529:web:32d02d2d8b3fe05d94e350",
   measurementId: "G-MZC38NN5BZ"
 };
+
 var cmd = document.querySelector(".cmdText")
-cmd.innerHTML += "<label>> Loading...</label>"
-normArrow = ">"
+cmd.innerHTML += "<label>> Initializing...</label>"
+let normArrow = ">"
 $(".cmd").show()
 $(document).ready(function () {
 
-  cmd.innerHTML += "<label>> Reading Paths...</label>"
+  cmd.innerHTML += "<label>> Resolving paths...</label>"
   var loginBtn = document.querySelector("#loginBTN")
 
   loginBtn.innerHTML = `<img src="./loading.gif" alt="">`
   loginBtn.classList.add("btn_loading")
 
-  firebase.initializeApp(firebaseConfig);
-  var database = firebase.database();
+  const app = initializeApp(firebaseConfig); const db = getDatabase(app); const analytics = getAnalytics(app);
 
-  let lockref = firebase.database().ref('shopless/admin/');
-  cmd.innerHTML += "<label>> Fetching Security Info...</label>"
+let dbUname = ""; let dbPWD = "";
+
+const dbRef = ref(db); const lockref = ref(db, 'shopless/admin/'); const vertionRef = ref(db, 'shopless/admin/vertion');
+
+  //let lockref = firebase.database().ref('shopless/admin/');
+  cmd.innerHTML += "<label>> Initializing security parameters...</label>"
+  cmd.innerHTML += "<label>> Fetching authentication state...</label>"
 
   // Read the data once
-  lockref.once('value', function (snapshot) {
-    // Iterate over each child
-    snapshot.forEach(function (childSnapshot) {
-      var key = childSnapshot.key; // The key for the child data
-      var value = childSnapshot.val(); // The value/data for the child
+  get(lockref).then((snapshot) => {
+  snapshot.forEach((childSnapshot) => {
+    const key = childSnapshot.key;
+    const value = childSnapshot.val();
 
-      // Do something with the key and value
-      console.log('Key:', key, 'Value:', value);
+    console.log('Key:', key, 'Value:', value);
 
-      if (key == "lock") {
+    if (key === "lock") {
+      if (value === "") {
+        cmd.innerHTML += "<label>X Warning: Security Disabled</label>";
+        loginBtn.classList.remove("btn_loading");
+        loginBtn.innerHTML = `<img class="doneGif" src="./done.gif" alt="">`;
+        loginBtn.style.border = "solid 1px #41B06E";
+        loginBtn.style.background = "#222831";
 
-        if (value == "") {
-          cmd.innerHTML += "<label>X UnSecured</label>"
-          loginBtn.classList.remove("btn_loading")
-          loginBtn.innerHTML = `<img class="doneGif" src="./done.gif" alt="">`
-          loginBtn.style.border = "solid 1px #41B06E"
-          loginBtn.style.background = "#222831"
+        setTimeout(loginBTNnormal, 3000);
 
-          setTimeout(loginBTNnormal, 3000)
+        setTimeout(() => {
+          $(".lock-card").slideUp(300);
+          $(".form").slideDown(300);
 
-          setTimeout(() => {
-            $(".lock-card").slideUp(300);
-            $(".form").slideDown(300);
-            // $(".cmd").show(300)
+          cmd.innerHTML += "<label>> Verifying update status...</label>";
 
-            let vertionReq = "corrent"
-            let vertion = "old"
-            let vertionRef = firebase.database().ref('shopless/admin/vertion');
+          get(vertionRef).then((snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+              const vertionKey = childSnapshot.key;
+              const vertionValue = childSnapshot.val();
 
+              if (vertionKey === "code") {
+                $("#verText").html("Updated " + vertionValue);
 
-            // Read the data once
-            vertionRef.once('value', function (snapshot) {
-
-              snapshot.forEach(function (childSnapshot) {
-                var vertionKey = childSnapshot.key;
-                var vertionValue = childSnapshot.val();
-
-                if (vertionKey == "code") {
-                  cmd.innerHTML += "<label>> Checking for updation...</label>"
-                  $("#verText").html("Updated " + vertionValue)
-                  if (vertionValue != localStorage.getItem("vertion")) {
-                    $(".updateCard").slideDown(300)
-                    $(".form").slideUp(300);
-                    // $(".cmd").hide(300)
-                    localStorage.setItem("vertion", vertionValue)
-                    alert(vertionValue)
-                  } else {
-                    $(".form").slideDown(300)
-                    $(".updateCard").slideUp(300);
-                    $(".cmd").show(300)
-                    cmd.innerHTML += "<label>> Updated</label>"
-                  }
-                }
-
-                $("#closeDetails").click(function () {
-                  localStorage.setItem("vertion", vertionValue)
-                  $(".form").slideDown(300)
-                  // $(".cmd").show(300)
-                  $(".updateCard").slideUp(300);
-                  cmd.innerHTML += "<label>> Updated to " + vertionValue + "</label>"
-                })
-
-                console.log('Key:', vertionKey, 'Value:', vertionValue);
-
-              });
-            });
-
-
-          }, 2500);
-        } else {
-          // $(".cmd").hide(300)
-          cmd.innerHTML += "<label>> Secured By Admin</label>"
-          loginBtn.classList.remove("btn_loading")
-          //loginBtn.innerHTML = `<img class="doneGif" src="./done.gif" alt="">`
-          //loginBtn.style.border = "solid 1px #41B06E"
-          loginBtn.style.background = "#222831"
-          loginBTNnormal()
-          //$(".cmd").hide(300)
-          //setTimeout(loginBTNnormal, 3000)
-          // $("#loginBTN").click(function(){
-          //   if (condition) {
-
-          //   }
-          // })
-
-
-          // loginBtn.classList.remove("btn_loading")
-          // loginBtn.innerHTML = `<img class="doneGif" src="./done.gif" alt="">`
-          // loginBtn.style.border = "solid 1px #41B06E"
-          // loginBtn.style.background = "#222831"
-
-          // setTimeout(loginBTNnormal, 3000)
-
-
-
-          let vertionReq = "corrent"
-          let vertion = "old"
-          let vertionRef = firebase.database().ref('shopless/admin/vertion');
-
-          cmd.innerHTML += "<label>> Checking for Updates...</label>"
-          // Read the data once
-          vertionRef.once('value', function (snapshot) {
-
-            snapshot.forEach(function (childSnapshot) {
-              var vertionKey = childSnapshot.key;
-              var vertionValue = childSnapshot.val();
-
-              if (vertionKey == "code") {
-                $("#verText").html("Updated " + vertionValue)
-                if (vertionValue != localStorage.getItem("vertion")) {
-                  cmd.innerHTML += "<label>> Updated to " + vertionValue + "</label>"
-                  $(".updateCard").slideDown(300)
+                if (vertionValue !== localStorage.getItem("vertion")) {
+                  $(".updateCard").slideDown(300);
                   $(".form").slideUp(300);
-                  //localStorage.setItem("vertion", vertionValue)
+                  localStorage.setItem("vertion", vertionValue);
+                  alert(vertionValue);
                 } else {
-                  $(".lock-card").slideDown(300)
+                  $(".form").slideDown(300);
                   $(".updateCard").slideUp(300);
-                  $(".cmd").show(300)
-                  cmd.innerHTML += "<label>> Corrent version: <b style='color: green'>" + vertionValue + "</b></label>"
+                  $(".cmd").show(300);
+                  cmd.innerHTML += "<label>> Updated</label>";
                 }
+
+                $("#closeDetails").click(() => {
+                  localStorage.setItem("vertion", vertionValue);
+                  $(".form").slideDown(300);
+                  $(".updateCard").slideUp(300);
+                  cmd.innerHTML += "<label>> All set! You're on version " + vertionValue + "</label>";
+                });
               }
 
-              $("#closeDetails").click(function () {
-                localStorage.setItem("vertion", vertionValue)
-                cmd.innerHTML += "<label>> Updated to <b style='color: green'>" + vertionValue + "</b></label>"
-                $(".lock-card").slideDown(300)
-                $(".updateCard").slideUp(300);
-              })
-
               console.log('Key:', vertionKey, 'Value:', vertionValue);
-
             });
           });
+        }, 2500);
 
+      } else {
+        cmd.innerHTML += "<label>> Protected by Admin Controls</label>";
+        loginBtn.classList.remove("btn_loading");
+        loginBtn.style.background = "#222831";
+        loginBTNnormal();
 
+        cmd.innerHTML += "<label>> Verifying update availability...</label>";
 
+        get(vertionRef).then((snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            const vertionKey = childSnapshot.key;
+            const vertionValue = childSnapshot.val();
 
+            if (vertionKey === "code") {
+              $("#verText").html("Updated " + vertionValue);
 
+              if (vertionValue !== localStorage.getItem("vertion")) {
+                cmd.innerHTML += "<label>> Great! Version  " + vertionValue + " is live</label>";
+                $(".updateCard").slideDown(300);
+                $(".form").slideUp(300);
+              } else {
+                $(".lock-card").slideDown(300);
+                $(".updateCard").slideUp(300);
+                $(".cmd").show(300);
+                cmd.innerHTML += `<label>> Version <b style='color: green'>${vertionValue} (corrent)</b></label>`;
+              }
 
-        }
+              $("#closeDetails").click(() => {
+                localStorage.setItem("vertion", vertionValue);
+                cmd.innerHTML += `<label>> Updated to <b style='color: green'>${vertionValue}</b></label>`;
+                $(".lock-card").slideDown(300);
+                $(".updateCard").slideUp(300);
+              });
+            }
+
+            console.log('Key:', vertionKey, 'Value:', vertionValue);
+          });
+        });
       }
+    }
 
-      if (key == "password") {
-        dbPWD = value
-        //alert(key)
-      }
-      if (key == "username") {
-        dbUname = value
-        console.log("uname=========: " + dbUname)
-        //alert(value)
-      }
-    });
+    if (key === "password") {
+      dbPWD = value;
+    }
+
+    if (key === "username") {
+      dbUname = value;
+      console.log("uname=========: " + dbUname);
+    }
   });
+}).catch((error) => {
+  console.error("Failed to get lockref:", error);
+});
+
+
   let Uname = document.querySelector("#Uname")
   let Pwd = document.querySelector("#Pwd")
 
@@ -191,24 +157,24 @@ $(document).ready(function () {
   }
 
   $("#loginBTN").click(function () {
-    cmd.innerHTML += "<label>> Checking Input...</label>"
-    if (Uname.value != "") {
-      if (Pwd.value != "") {
+    cmd.innerHTML += "<label>> Hang on, checking what you entered...</label>"
+    if (Uname.value) {
+      if (Pwd.value) {
         // alert(dbUname)
         if (Uname.value == dbUname) {
-          cmd.innerHTML += "<label style='color: green;>> USERNAME Done</label>"
+          cmd.innerHTML += "<label style='color: green;>> Username confirmed</label>"
           //alert("uname done")
           if (Pwd.value == dbPWD) {
-            cmd.innerHTML += "<label style='color: green;>> PASSWORD Done</label>"
+            cmd.innerHTML += "<label style='color: green;>> Password accepted</label>"
             if (adminName == null) {
-              cmd.innerHTML += "<label style='color: yellow;>> New User Detected</label>"
+              cmd.innerHTML += "<label style='color: yellow;>> New user profile detected</label>"
               if (document.querySelector("#adminName").value.length > 3) {
                 //alert(document.querySelector("#adminName").value)
                 localStorage.setItem("admin_name", document.querySelector("#adminName").value)
                 $(".lock-card").slideUp(300);
                 $(".form").slideDown(300);
                 $(".cmd").show(300)
-                cmd.innerHTML += "<label style='color: green;>> New User Added on <b style='color: yellow;'>" + document.querySelector("#adminName").value + "</b></label>"
+                cmd.innerHTML += "<label style='color: green;>> [INFO] New user registered by <b style='color: yellow;'>" + document.querySelector("#adminName").value + "</b></label>"
               }
             } else {
               $(".lock-card").slideUp(300);
@@ -218,24 +184,24 @@ $(document).ready(function () {
             }
             // alert("all")
           } else {
-            cmd.innerHTML += "<label style='color: red;>> Password error : " + Pwd.value + "</label>"
+            cmd.innerHTML += "<label style='color: red;'>> Invalid password : " + Pwd.value + "</label>"
             Pwd.classList.add("inputError")
             setTimeout(() => {
               Pwd.classList.remove("inputError")
             }, 1000);
           }
         } else {
-          cmd.innerHTML += "<label style='color: red;>> UserName error : " + Uname.value + " </label>"
+          cmd.innerHTML += "<label style='color: red;'>> This username does not exist : " + Uname.value + " </label>"
           Uname.classList.add("inputError")
           setTimeout(() => {
             Uname.classList.remove("inputError")
           }, 1000);
         }
       } else {
-        cmd.innerHTML += "<label style='color: red;>> Enter Password </label>"
+        cmd.innerHTML += "<label style='color: red;'>> Password is required </label>"
       }
     } else {
-      cmd.innerHTML += "<p style='color: red;>> Enter UserName </p>"
+      cmd.innerHTML += "<p style='color: red;'>> Username is required </p>"
     }
   })
 
@@ -269,7 +235,7 @@ $(document).ready(function () {
     uploadBtn.classList.add("btn_loading")
 
     const path = document.querySelector("#path")
-    let postRef = firebase.database().ref('shopless/' + path.value);
+    let postRef = ref(db, 'shopless/' + path.value);
     const imgUrl = document.querySelector("#imgURL")
     const name = document.querySelector("#name")
     const price = document.querySelector("#price")
@@ -304,14 +270,14 @@ $(document).ready(function () {
       update9['ads9'] = imgUrl.value;
 
 
-      let userInput = prompt("Please enter add number", "1");
+      let userInput = prompt("Please enter ads number number", "1");
 
       if (userInput != null) {
         //console.log("Hello " + userInput + "! How are you today?");
         if (userInput == 1) {
           postRef.update(update1).then(() => {
             console.log('Update successful!');
-
+cmd.innerHTML += '<label>> Update successful!</label>'
 
             BTNsuccess()
             setTimeout(BTNnormal, 3000)
@@ -319,7 +285,7 @@ $(document).ready(function () {
 
           }).catch((error) => {
             console.error('Update failed: ' + error.message);
-            cmd.innerHTML += "<label style='color: red'>>1th ads Update Failed</label>"
+            cmd.innerHTML += `<label style='color: red'>>1th ads Update Failed ${error}</label>`
             BTNerror()
             setTimeout(BTNnormal, 3000)
           });
@@ -447,7 +413,7 @@ $(document).ready(function () {
                             setTimeout(BTNnormal, 3000)
                           });
                         } else {
-                          cmd.innerHTML += "<label style='color: red'>> Maximum ads Limitted by 9 </label>"
+                          cmd.innerHTML += "<label style='color: red'>> Limit reached: You can post up to 9 ads </label>"
                           BTNerror()
                           setTimeout(BTNnormal, 3000)
                         }
@@ -461,7 +427,7 @@ $(document).ready(function () {
         }
       } else {
 
-        cmd.innerHTML += "<label style='color: red'>> Aborted by Admin</label>"
+        cmd.innerHTML += "<label style='color: red'>> Execution halted (admin override)</label>"
         BTNerror()
         setTimeout(BTNnormal, 3000)
         // alert("Aborted By Admin.");
@@ -472,40 +438,51 @@ $(document).ready(function () {
       //alert("this is adds " + path.value)
 
     } else {
-      cmd.innerHTML += "<div <label>> Uploading Products <br>> Product name : <p style='color: blue'>  " + name.value + "</p><br>> Product Image : <p style='color: blue'> " + imgUrl.value + "</p><br>> Product blue : <p style='color: blue;'> " + price.value + "</p><br>> Product Description : <p style='color: blue'> " + description.value + "</p><br>> Product Quantity : <p style='color: blue'> " + quantity.value + "</p><br>> Product Brand : <p style='color: blue'> " + brand.value + "</p><br>> Product Page : <p style='color: blue'> " + href.value + "</p></label></div>"
-      postRef.push({
-        'product_name': name.value,
-        'product_image': imgUrl.value,
-        'product_price': price.value,
-        'product_description': description.value,
-        'quantity': quantity.value,
-        'brand': brand.value,
-        'href': href.value,
-      })
-        .then(res => {
-          cmd.innerHTML += "<label >> Uploaded Products to <p style='color: green'> " + res._delegate._path + "</p></label>"
-          // console.log(res.getKey()) // this will return you ID
-          // setTimeout(clearTitle, 50)
-          // setTimeout(clearSubTitle, 100)
-          // setTimeout(clearImage, 200)
-          // setTimeout(clearColor, 300)
-          // setTimeout(clearUrl, 400)
-          console.warn(res._delegate._path)
-          cmd.innerHTML +="> Uploaded Path Key : " + res._delegate.key
+      
 
+// Construct the path safely
+const productPath = `shopless/${path.value}`;
+const postRef = ref(db, productPath);
 
-          BTNsuccess()
-          setTimeout(BTNnormal, 3000)
+// Show what is being uploaded
+cmd.innerHTML += `
+  <div>
+    <label>> Products are on their way!</label><br>
+    > Product name : <p style='color: blue'>${name.value}</p><br>
+    > Product Image : <p style='color: blue'>${imgUrl.value}</p><br>
+    > Product Price : <p style='color: blue;'>${price.value}</p><br>
+    > Product Description : <p style='color: blue'>${description.value}</p><br>
+    > Product Quantity : <p style='color: blue'>${quantity.value}</p><br>
+    > Product Brand : <p style='color: blue'>${brand.value}</p><br>
+    > Product Page : <p style='color: blue'>${href.value}</p>
+  </div>
+`;
 
-        })
-        .catch(error => console.error(error));
+// Push product data to Firebase
+push(postRef, {
+  product_name: name.value,
+  product_image: imgUrl.value,
+  product_price: price.value,
+  product_description: description.value,
+  quantity: quantity.value,
+  brand: brand.value,
+  href: href.value,
+})
+.then((res) => {
+  const key = res.key;
+  const path = res._path?.toString?.() || "[unknown]";
+  cmd.innerHTML += `<label>> Product successfully Uploaded! <br> > Location <p style='color: green'>${path}</p></label>`;
+  cmd.innerHTML += `> Uploaded Key : ${key}`;
 
-      //alert("error")
-
-      // BTNerror()
-      // setTimeout(BTNnormal, 3000)
-
-
+  BTNsuccess();
+  setTimeout(BTNnormal, 3000);
+})
+.catch((error) => {
+  console.error("Upload failed:", error);
+  cmd.innerHTML += `> Uploaded failed : ${error}`;
+  BTNerror();
+  setTimeout(BTNnormal, 3000);
+});
 
     }
 
@@ -591,21 +568,19 @@ $(document).ready(function () {
   // firebase.initializeApp(firebaseConfig);
 
   // Get a reference to the Firebase Realtime Database
-  var db = firebase.database();
+  // var db = firebase.database();
 
   // Reference to the users' status path in your database
-  var usersStatusDatabaseRef = db.ref('/shopless/admin/status');
+  let userStatusDatabaseRef;
 
-  // Check if admin_name is stored in localStorage and set the userStatusDatabaseRef accordingly
-  if (localStorage.getItem("admin_name") != null) {
-    let id = localStorage.getItem("admin_name");
-    var userStatusDatabaseRef = usersStatusDatabaseRef.child(id);
-  } else {
-    // Reference to the current user's status using a placeholder 'os' variable
-    // Make sure to define 'os' or replace it with the actual user ID or another identifier
-    var userStatusDatabaseRef = usersStatusDatabaseRef.child(os);
-  }
+const baseStatusPath = '/shopless/admin/status/';
 
+if (localStorage.getItem("admin_name") != null) {
+  const id = localStorage.getItem("admin_name");
+  userStatusDatabaseRef = ref(db, baseStatusPath + id);
+} else {
+  userStatusDatabaseRef = ref(db, baseStatusPath + os);
+}
   // Function to format the timestamp into a human-readable date and time
   function formatTimestamp(timestamp) {
     var date = new Date(timestamp);
@@ -614,58 +589,50 @@ $(document).ready(function () {
   }
 
   // Reference to the /.info/connected path in Firebase Realtime Database
-  var isOnlineForDatabase = db.ref('.info/connected');
-  isOnlineForDatabase.on('value', function (snapshot) {
-    // If we're not currently connected, don't do anything
-    $(".status").html("Online|")
-    cmd.innerHTML += `<p>> Status <span style="color: green;"Online</span></p>`
-    if (snapshot.val() == false) {
-      return;
-    };
+  const isOnlineForDatabase = ref(db, ".info/connected");
 
+onValue(isOnlineForDatabase, (snapshot) => {
+  $(".status").html("Online|");
+  cmd.innerHTML += `<p>> Status <span style="color: green;">Online</span></p>`;
 
-    // If we are currently connected, then use the 'onDisconnect()' method
-    userStatusDatabaseRef.onDisconnect().update({
-      status: 'offline',
-      last_changed: firebase.database.ServerValue.TIMESTAMP
-    }).then(function () {
+  if (snapshot.val() === false) return;
 
-      // Get the server timestamp and convert it to a human-readable format
-      db.ref('.info/serverTimeOffset').once('value').then(function (offsetSnapshot) {
-        var serverTime = Date.now() + offsetSnapshot.val();
-        var formattedTime = formatTimestamp(serverTime);
+  onDisconnect(userStatusDatabaseRef).update({
+    status: "offline",
+    last_changed: serverTimestamp()
+  }).then(() => {
+    const offsetRef = ref(db, ".info/serverTimeOffset");
+    get(offsetRef).then((offsetSnapshot) => {
+      const serverTime = Date.now() + offsetSnapshot.val();
+      const formattedTime = formatTimestamp(serverTime);
 
-        // Set our user's online status to 'online' with the formatted timestamp
-        userStatusDatabaseRef.update({
-          status: 'online',
-          last_changed: formattedTime
-        }).then(function(){
-          cmd.innerHTML += `<label>> User status : <b><span style="color: green;">online</span><b></label>`
-        });
+      update(userStatusDatabaseRef, {
+        status: "online",
+        last_changed: formattedTime
+      }).then(() => {
+        cmd.innerHTML += `<label>> User status : <b><span style="color: green;">online</span></b></label>`;
       });
     });
   });
-
+});
   // Listen for changes in the user's status and log the status change with the formatted timestamp
-  userStatusDatabaseRef.on('value', function (snapshot) {
-    if (snapshot.val() != null) {
-      console.log('User status changed to: ' + snapshot.val().status);
-      console.log('Time: ' + snapshot.val().last_changed);
-      cmd.innerHTML += `<p>> User status changed to: <span style="color: green;">${snapshot.val().status}</span></p>`
+  
+onValue(userStatusDatabaseRef, (snapshot) => {
+  const data = snapshot.val();
+  if (data !== null) {
+    console.log('User status changed to: ' + data.status);
+    console.log('Time: ' + data.last_changed);
+    cmd.innerHTML += `<p>> User status changed to: <span style="color: green;">${data.status}</span></p>`;
+  }
+});
 
-
-
-    }
-  });
-
-
-  $(".side_menu").slideUp(0)
+//  $(".side_menu").slideUp(0)
 
   $(".menu_btn").click(function () {
-    $(".side_menu").slideDown(200)
+    document.querySelector(".side_menu").classList.add('open')
   })
   $(".close_nav").click(function () {
-    $(".side_menu").slideUp(200)
+    document.querySelector(".side_menu").classList.remove('open')
   })
 
 
@@ -734,7 +701,159 @@ $(document).ready(function () {
 
 
 
-})
+const qs=selector=>document.querySelector(selector)
+
+qs('#editData').onclick=()=>{
+  qs('div.card.form').classList.add('hidden')
+  qs('.listPage').classList.remove('hidden')
+  qs('.side_menu').classList.remove('open')
+  cmd.innerHTML += `> Data edit page open`;
+}
+
+qs('#addData').onclick=()=>{
+  qs('div.card.form').classList.remove('hidden')
+  qs('.listPage').classList.add('hidden')
+  qs('.side_menu').classList.remove('open')
+  cmd.innerHTML += `> Data Entry page open<br>`;
+}
+
+
+
+
+
+
+
+
+function renderDeals(items) {
+  cmd.innerHTML += `> Rendering Edit Data...<br>`;
+  qs("#editList").innerHTML = items
+    .map((item) => {
+      
+      return `
+        <div class="item" data-id="${item.id}">
+          <img src="${item.product_image}" alt="IMG" />
+          <div>
+            <input type="text" name="name" value="${item.product_name}" placeholder="Product name" />
+            <input type="text" name="description" value="${item.product_description}" placeholder="Product description" />
+            <input type="text" name="price" value="${item.product_price}" placeholder="Product price" />
+            <input type="text" id="imgurl" name="imageUrl" value="${item.product_image}" placeholder="Product image" />
+
+            <button class="update hidden">Update</button>
+            <span class="delete">DELETE</span>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  // Show "Update" button when any input changes
+  document.querySelectorAll(".item input").forEach((input) => {
+    input.addEventListener("input", (e) => {
+      const itemDiv = e.target.closest(".item");
+      const updateBtn = itemDiv.querySelector(".update");
+      updateBtn.classList.remove("hidden");
+
+      // Live preview image on imgurl input
+      if (e.target.name === "imageUrl") {
+        const img = itemDiv.querySelector("img");
+        img.src = e.target.value;
+      }
+    });
+  });
+
+  // Handle "Update" button click
+  document.querySelectorAll(".item .update").forEach((button) => {
+    button.addEventListener("click", async (e) => {
+      const itemDiv = e.target.closest(".item");
+      const id = itemDiv.getAttribute("data-id");
+
+      const name = itemDiv.querySelector('input[name="name"]').value;
+      const description = itemDiv.querySelector('input[name="description"]').value;
+      const price = itemDiv.querySelector('input[name="price"]').value;
+      const imageUrl = itemDiv.querySelector('input[name="imageUrl"]').value;
+
+      const updateData = {
+        product_name: name,
+        product_description: description,
+        product_price: price,
+        product_image: imageUrl,
+      };
+
+      const db = getDatabase();
+      const itemRef = ref(db, `shopless/home/fresh_deals/${id}`);
+
+      try {
+        await update(itemRef, updateData);
+        button.classList.add("hidden");
+        cmd.innerHTML+=`> Updated successfully to ${itemRef}<br>`
+      } catch (error) {
+        console.error("Update failed", error);
+        alert("Update failed. Check the command line for error details.");
+        cmd.innerHTML += `> [ERROR] Update operation failed ${error}<br>`;
+      }
+    });
+  });
+
+  // Handle "Delete" button click
+  document.querySelectorAll(".delete").forEach((btn) => {
+    btn.addEventListener("click", async (e) => {
+      const itemDiv = e.target.closest(".item");
+      const id = itemDiv.getAttribute("data-id");
+
+      if (confirm("Are you sure you want to delete this item?")) {
+        try {
+          const db = getDatabase();
+          const itemRef = ref(db, `shopless/home/fresh_deals/${id}`);
+          await remove(itemRef);
+          itemDiv.remove();
+        } catch (error) {
+          console.error("Delete failed", error);
+          alert("Failed to delete. Check the command line for error details.");
+          cmd.innerHTML+=`[FAILURE] Deletion process interrupted ${error} <br> ${error.message} <br>`
+        }
+      }
+    });
+  });
+}
+
+
+//const dbRef = ref(db);
+get(child(dbRef, document.querySelector('#pathSelector').value))
+  .then((snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      const items = Object.entries(data).map(([id, value]) => ({
+        id,
+        ...value,
+      }));
+      renderDeals(items);
+    } else {
+      console.log("No data available");
+      cmd.innerHTML+=`> Looks like there's nothing here yet <br>`
+    }
+  })
+
+
+document.querySelector('#pathSelector').onchange=()=>{
+  cmd.innerHTML+=`> Path changed ${$('#pathSelector').value} <br>`
+  get(child(dbRef, document.querySelector('#pathSelector').value))
+  .then((snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      const items = Object.entries(data).map(([id, value]) => ({
+        id,
+        ...value,
+      }));
+      renderDeals(items);
+    } else {
+      console.log("No data available");
+      cmd.innerHTML+=`> Looks like there's nothing here yet <br>`
+    }
+  })
+
+}
+
+}) // Document redy fumg end
 
 
 
@@ -747,7 +866,7 @@ navigator.getBattery().then(function (battery) {
     // cmd.innerHTML +="<p>> Battery charging: <span style='color: blue;'>" + (battery.charging ? "Yes" : "No");
     // cmd.innerHTML +="<p>> Battery charging time: <span style='color: blue;'>" + (battery.chargingTime / 60) + " minutes"
     // cmd.innerHTML +="<p>> Battery discharging time: <span style='color: blue;'>" + (battery.dischargingTime / 60) + " minutes"
-    bl = battery.level * 100
+    let bl = battery.level * 100
     if (bl < 20) {
       alert("Your battery too low: " + bl + "%")
     } let bc = battery.charging ? "Yes" : "No"
@@ -779,3 +898,18 @@ navigator.getBattery().then(function (battery) {
 
 
 });
+
+
+
+
+
+// for test purpose 
+
+ $('.updateCard').remove() // keep it
+// document.body.onclick=()=>
+// {$('.lock-card').remove()
+// }
+
+document.querySelectorAll('#openCreatePath').onclick=()=>{
+  document.querySelector('.path_creation_page').classList.remove('hidden')
+}
