@@ -968,7 +968,7 @@ document.querySelector('#openCreatePath').onclick = () => {
   }
 };
 
-$('.close_creation_page').click=()=>{
+document.querySelector('.close_creation_page').onclick=()=>{
   document.querySelector('.path_creation_page').classList.add('hidden');
 }
 
