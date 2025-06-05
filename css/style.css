@@ -45,8 +45,9 @@ body{
     }
 }
 .logo{
-    max-width: 80px;
+    max-inline-size: 80px;
     margin: auto;
+    mix-blend-mode: multiply;
 }
 .time_and_logo{
     margin: auto;
@@ -256,7 +257,7 @@ button svg{
 
 header{
     background-color: var(--primary);
-    height: 70px;
+    height: 80px;
     overflow: hidden;
 }
 header .container{
@@ -417,7 +418,7 @@ li a{
         margin: 0 1rem;
         
         .create{
-            height: 50px;
+            height: 40px;
             min-width: 40px;
             display: flex;
             align-items: center;
@@ -426,6 +427,7 @@ li a{
             border-radius: 100%;
             background: #626583;
             color: #fff;
+            margin-left: 1rem;
             
         }
     }
@@ -492,7 +494,7 @@ li a{
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.5);
     .form{
         background: var(--dark);
         padding: 2rem;

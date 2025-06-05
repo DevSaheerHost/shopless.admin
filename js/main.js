@@ -49,7 +49,7 @@ const dbRef = ref(db); const lockref = ref(db, 'shopless/admin/'); const vertion
         loginBtn.innerHTML = `<img class="doneGif" src="./done.gif" alt="">`;
         loginBtn.style.border = "solid 1px #41B06E";
         loginBtn.style.background = "#222831";
-
+        
         setTimeout(loginBTNnormal, 3000);
 
         setTimeout(() => {
@@ -96,6 +96,8 @@ const dbRef = ref(db); const lockref = ref(db, 'shopless/admin/'); const vertion
         loginBtn.classList.remove("btn_loading");
         loginBtn.style.background = "#222831";
         loginBTNnormal();
+        
+        localStorage.getItem("admin_name")?document.querySelector('#Uname').value = 'Shopless.in':''
 
         cmd.innerHTML += "<label>> Verifying update availability...</label>";
 
@@ -154,6 +156,7 @@ const dbRef = ref(db); const lockref = ref(db, 'shopless/admin/'); const vertion
   if (adminName != null) {
     cmd.innerHTML += "<label>> Authorized Admin<b style='color: green;'> " + adminName + "</b></label>"
     $("#adminName").hide(100)
+    
   }
 
   $("#loginBTN").click(function () {
@@ -910,6 +913,62 @@ navigator.getBattery().then(function (battery) {
 // {$('.lock-card').remove()
 // }
 
-document.querySelectorAll('#openCreatePath').onclick=()=>{
-  document.querySelector('.path_creation_page').classList.remove('hidden')
+
+const allPaths = JSON.parse(localStorage.getItem('paths')) || [];
+const selector = document.getElementById('pathSelector');
+
+// Add each path as a new <option>, skipping duplicates
+allPaths.forEach(path => {
+  // Check if this path already exists in the <select>
+  if (![...selector.options].some(option => option.value === path)) {
+    const opt = document.createElement('option');
+    opt.value = path;
+    opt.textContent = path;
+    selector.appendChild(opt);
+  }
+});
+
+
+document.querySelector('#openCreatePath').onclick = () => {
+  const $ = selector => document.querySelector(selector);
+  $('.path_creation_page').classList.remove('hidden');
+
+  const createBtn = $('.path_creation_page button');
+  const inputField = $('.path_creation_page input');
+
+  // Avoid duplicate event listeners
+  if (!createBtn.dataset.listenerAdded) {
+    createBtn.onclick = () => {
+      try {
+        const path = inputField.value.trim();
+
+        if (!path) return alert("Please enter a valid path");
+
+        // Get existing paths from localStorage or initialize empty array
+        const stored = JSON.parse(localStorage.getItem('paths')) || [];
+
+        // Check for duplicates (optional)
+        if (!stored.includes(path)) {
+          stored.push(path);
+          localStorage.setItem('paths', JSON.stringify(stored));
+          alert("Path created: " + path);
+          cmd.innerHTML+='[INFO] Path added - ' + path +`<br>`
+        } else {
+          alert("You've already set this path");
+          cmd.innerHTML+='Operation failed: existing path detected <br>'
+        }
+
+        inputField.value = ''; // Clear input
+      } catch (e) {
+        console.error("Storage error:", e);
+      }
+    };
+
+    createBtn.dataset.listenerAdded = 'true';
+  }
+};
+
+$('.close_creation_page').click=()=>{
+  document.querySelector('.path_creation_page').classList.add('hidden');
 }
+
