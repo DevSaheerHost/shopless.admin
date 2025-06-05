@@ -34,6 +34,27 @@ const dbRef = ref(db); const lockref = ref(db, 'shopless/admin/'); const vertion
   cmd.innerHTML += "<label>> Initializing security parameters...</label>"
   cmd.innerHTML += "<label>> Fetching authentication state...</label>"
 
+
+
+const qs=selector=>document.querySelector(selector)
+
+qs('#editData').onclick=()=>{
+  qs('div.card.form').classList.add('hidden')
+  qs('.listPage').classList.remove('hidden')
+  qs('.side_menu').classList.remove('open')
+  cmd.innerHTML += `> Data edit page open`;
+}
+
+qs('#addData').onclick=()=>closeAndOpenDataUploadPage();
+
+const closeAndOpenDataUploadPage=()=>{
+  qs('div.card.form').classList.remove('hidden')
+  qs('.listPage').classList.add('hidden')
+  qs('.side_menu').classList.remove('open')
+  cmd.innerHTML += `> Data Entry page open<br>`;
+}
+
+
   // Read the data once
   get(lockref).then((snapshot) => {
   snapshot.forEach((childSnapshot) => {
@@ -248,6 +269,13 @@ const dbRef = ref(db); const lockref = ref(db, 'shopless/admin/'); const vertion
     const href = document.querySelector("#href")
     let wordToCheck = "ads/"
     let filepath = path.value
+    if (filepath.includes('shopless')) {}else{
+      alert('Keep it simple - no shopless/ needed here OR check the path you entered')
+      cmd.innerHTML+='> [INFO] Prefix shopless/ ignored during upload <br>'
+      BTNerror()
+      setTimeout(BTNnormal, 3000)
+      return;
+    }
     if (filepath.includes(wordToCheck)) {
       cmd.innerHTML += "<label>> Uploading ads to <b style='color: green'>" + filepath + "</b></label>"
       //console.log(contents)
@@ -704,22 +732,6 @@ onValue(userStatusDatabaseRef, (snapshot) => {
 
 
 
-const qs=selector=>document.querySelector(selector)
-
-qs('#editData').onclick=()=>{
-  qs('div.card.form').classList.add('hidden')
-  qs('.listPage').classList.remove('hidden')
-  qs('.side_menu').classList.remove('open')
-  cmd.innerHTML += `> Data edit page open`;
-}
-
-qs('#addData').onclick=()=>{
-  qs('div.card.form').classList.remove('hidden')
-  qs('.listPage').classList.add('hidden')
-  qs('.side_menu').classList.remove('open')
-  cmd.innerHTML += `> Data Entry page open<br>`;
-}
-
 
 
 
@@ -729,6 +741,7 @@ qs('#addData').onclick=()=>{
 
 function renderDeals(items) {
   cmd.innerHTML += `> Rendering Edit Data...<br>`;
+  
   qs("#editList").innerHTML = items
     .map((item) => {
       
@@ -831,6 +844,7 @@ get(child(dbRef, document.querySelector('#pathSelector').value))
       }));
       renderDeals(items);
     } else {
+
       console.log("No data available");
       cmd.innerHTML+=`> Looks like there's nothing here yet <br>`
     }
@@ -849,8 +863,13 @@ document.querySelector('#pathSelector').onchange=()=>{
       }));
       renderDeals(items);
     } else {
+      
       console.log("No data available");
       cmd.innerHTML+=`> Looks like there's nothing here yet <br>`
+      document.querySelector("#editList").innerHTML = `<h4>Looks like there's nothing here yet </h4>
+      <button class='addDataTwo'>Upload Data</button>
+      `
+      document.querySelector('.addDataTwo').onclick=()=>closeAndOpenDataUploadPage();
     }
   })
 
@@ -957,6 +976,7 @@ function addPathToSelector(path) {
     opt.value = path;
     opt.textContent = path;
     selector.appendChild(opt);
+    selector.value=path
   }
 }
 
@@ -968,7 +988,7 @@ $$('#openCreatePath').onclick = () => {
 
   const createBtn = $$('.path_creation_page button');
   const inputField = $$('.path_creation_page input');
-
+inputField.focus()
   if (!createBtn.dataset.listenerAdded) {
     createBtn.onclick = () => {
       try {
@@ -977,18 +997,26 @@ $$('#openCreatePath').onclick = () => {
 
         const stored = JSON.parse(localStorage.getItem('paths')) || [];
 
+if (path.includes('shopless')) {
+  
+
         if (!stored.includes(path)) {
           stored.push(path);
           localStorage.setItem('paths', JSON.stringify(stored));
 
           addPathToSelector(path);
 
-          alert("Path created: " + path);
-          cmd.innerHTML += '[INFO] Path added - ' + path + `<br>`;
+          //alert("Path created: " + path);
+          cmd.innerHTML += '> [INFO] Path added - ' + path + `<br>`;
+          document.querySelector('.path_creation_page').classList.add('hidden');
         } else {
           alert("You've already set this path");
           cmd.innerHTML += 'Operation failed: existing path detected <br>';
         }
+}else{
+  alert('Start your path with shopless/ to continue')
+  cmd.innerHTML+='> [RULE] Path must follow format: shopless/... <br>'
+}
 
         inputField.value = '';
       } catch (e) {

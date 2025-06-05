@@ -20,6 +20,14 @@ body{
     background-color: var(--body);
     color: var(--white);
 }
+button{
+    word-wrap: nowrap;
+    text-wrap: nowrap;
+    width: max-content;
+    padding: .6rem 1rem;
+}
+
+
 .Light{
     --primary: #9CAFAA;
     --dark: #D6DAC8;
