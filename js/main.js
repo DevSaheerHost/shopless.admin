@@ -259,7 +259,7 @@ const closeAndOpenDataUploadPage=()=>{
     uploadBtn.classList.add("btn_loading")
 
     const path = document.querySelector("#path")
-    let postRef = ref(db, 'shopless/' + path.value);
+    let postRef = ref(db, path.value);
     const imgUrl = document.querySelector("#imgURL")
     const name = document.querySelector("#name")
     const price = document.querySelector("#price")
@@ -472,7 +472,7 @@ cmd.innerHTML += '<label>> Update successful!</label>'
       
 
 // Construct the path safely
-const productPath = `shopless/${path.value}`;
+const productPath = `${path.value}`;
 const postRef = ref(db, productPath);
 
 // Show what is being uploaded
